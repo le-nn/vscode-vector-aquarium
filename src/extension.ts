@@ -1,6 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import path = require('path');
+import * as path from 'path';
 import * as vscode from 'vscode';
 
 
@@ -15,15 +15,10 @@ export function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "vscode-vector-aquarium" is now active!');
 
-	
-	const setting= new Setting();
+	const setting = new Setting(context.extensionUri);
 	context.subscriptions.push(
-		vscode.window.registerWebviewViewProvider('vscode-vector-aquarium.view',setting)
+		vscode.window.registerWebviewViewProvider('vscode-vector-aquarium.view', setting)
 	);
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
 
 	let disposable = vscode.commands.registerCommand('vscode-vector-aquarium.open', () => {
 		// The code you place here will be executed every time your command is executed
@@ -41,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		);
 
-		panel.webview.html = "<h1>Hello !!!!!</h1>";
+		panel.webview.html = "<h1>Hellwefawefaweo !!!!!</h1>";
 	});
 
 	context.subscriptions.push(disposable);
@@ -52,22 +47,51 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() { }
 
 class Setting implements vscode.WebviewViewProvider {
-	resolveWebviewView(webviewView: vscode.WebviewView, context: vscode.WebviewViewResolveContext<unknown>, token: vscode.CancellationToken): void | Thenable<void> {
-		console.log("OK!");
-		webviewView.webview.options = { enableScripts: true };
-		webviewView.webview.html = `
-		<!DOCTYPE html>
-		<html lang="en">
-		<head>
-		    <meta charset="UTF-8">
-		    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-		    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		    <title>Document</title>
-		</head>
-		<body>
-		    <h1>Hello !!!!</h1>
-		</body>
-		</html>
-				`;
+	constructor(readonly extensionUri: vscode.Uri) {
+
 	}
+
+	resolveWebviewView(
+		webviewView: vscode.WebviewView,
+		context: vscode.WebviewViewResolveContext<unknown>,
+		token: vscode.CancellationToken
+	): void | Thenable<void> {
+		const scriptPathOnDisk = vscode.Uri.joinPath(this.extensionUri, 'dist', 'index.js');
+		const scriptUri = webviewView.webview.asWebviewUri(scriptPathOnDisk);
+
+		webviewView.webview.options = { enableScripts: true };
+		webviewView.webview.html = this.buildView(scriptUri);
+
+	}
+
+	private buildView(scriptUri: vscode.Uri) {
+		// Use a nonce to only allow specific scripts to be run
+		const nonce = getNonce();
+
+		return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<h1>Hello Test !!!!</h1>
+	<div id="app">ddrdrhtdrtht</div>
+	<script nonce="${nonce}" src="${scriptUri}"> </script>
+</body>
+</html>
+`;
+	}
+}
+
+function getNonce() {
+	let text = '';
+	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	for (let i = 0; i < 32; i++) {
+		text += possible.charAt(Math.floor(Math.random() * possible.length));
+	}
+	return text;
 }
