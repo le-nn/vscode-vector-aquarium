@@ -55,8 +55,7 @@ class Setting {
 	<title>Document</title>
 </head>
 <body>
-	<h1>Hello Test !!!!</h1>
-	<div id="app">ddrdrhtdrtht</div>
+	<div id="app"></div>
 	<script nonce="${nonce}" src="${scriptUri}"> </script>
 </body>
 </html>

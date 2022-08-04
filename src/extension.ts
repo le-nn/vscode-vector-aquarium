@@ -39,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
 		panel.webview.html = "<h1>Hellwefawefaweo !!!!!</h1>";
 	});
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(disposable); 
 }
 
 
@@ -78,8 +78,7 @@ class Setting implements vscode.WebviewViewProvider {
 	<title>Document</title>
 </head>
 <body>
-	<h1>Hello Test !!!!</h1>
-	<div id="app">ddrdrhtdrtht</div>
+	<div id="app"></div>
 	<script nonce="${nonce}" src="${scriptUri}"> </script>
 </body>
 </html>
