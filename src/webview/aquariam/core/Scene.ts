@@ -6,23 +6,27 @@ import { MousePressedEvent } from "./MouseEvent";
 type Subscription = ReturnType<typeof animationFrame>;
 
 export class Scene {
-    subscription: Subscription = { end: () => { } };
+    private _actors: Actor[] = [];
+    private _subscription: Subscription = { end: () => { } };
+
     height = 0;
     width = 0;
-    _actors: Actor[] = [];
 
     get actors() {
         return this._actors;
     }
 
-    constructor(width: number, height: number, readonly renderer: IRenderer) {
+    constructor(
+        width: number,
+        height: number,
+        readonly renderer: IRenderer
+    ) {
         this.width = width;
         this.height = height;
     }
 
     append(actor: Actor) {
         this._actors.push(actor);
-        actor.setup(this);
     }
 
     remove(actor: Actor) {
@@ -30,15 +34,16 @@ export class Scene {
     }
 
     begin() {
-        this.end();
-        this.subscription = animationFrame(this.tick.bind(this));
         for (const a of this.actors) {
             a.setup(this);
         }
+
+        this.end();
+        this._subscription = animationFrame(this.tick.bind(this));
     }
 
     end() {
-        this.subscription.end();
+        this._subscription.end();
     }
 
     tick(deltaTime: number) {

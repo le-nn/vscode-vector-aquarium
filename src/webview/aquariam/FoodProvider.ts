@@ -1,4 +1,5 @@
 import { Actor } from "./core/Actor";
+import { DrawableActor } from "./core/DrawableActor";
 import { MousePressedEvent } from "./core/MouseEvent";
 import { Scene } from "./core/Scene";
 import { Food } from "./Food";
@@ -6,7 +7,7 @@ import { IController } from "./IController";
 import { SweyFallingController } from "./SwayFallingController";
 
 export class FoodProvider extends Actor {
-    foods: SweyFallingController<Food>[] = [];
+    foods: SweyFallingController<DrawableActor>[] = [];
 
     setup(scene: Scene): void {
 
@@ -15,21 +16,22 @@ export class FoodProvider extends Actor {
     update(deltaTime: number, scene: Scene): void {
         for (const food of this.foods) {
             food.update(deltaTime, scene);
-
             if (food.isDie) {
-                this.remove(food.colony);
+                this.remove(food.actor);
             }
         }
     }
 
-    remove(food: Food) {
-        this.foods = this.foods.filter(x => x.colony !== food);
+    remove(food: DrawableActor) {
+        this.foods = this.foods.filter(x => x.actor !== food);
     }
 
     pressed(e: MousePressedEvent): void {
         this.foods.push(
             new SweyFallingController(
-                new Food({ x: e.position.x, y: 0 })
+                new DrawableActor(new Food(), {
+                    location: { x: e.position.x, y: 0 }
+                })
             )
         );
     }

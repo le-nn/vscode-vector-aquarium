@@ -4,41 +4,37 @@ import { MousePressedEvent } from "./core/MouseEvent";
 import { Random } from "./core/Random";
 import { Scene } from "./core/Scene";
 import { Vector2D } from "./core/Vector2D";
-import { IColony } from "./IColoney";
 import { IRenderer } from "./IRenderer";
 import { MarbleCircle } from "./shapes/MarbleCircle";
+import { Shape } from "./shapes/Shape";
 
-export class Ripple implements IColony {
+export class Ripple extends Actor {
+    setup(scene: Scene): void {
+
+    }
+    pressed(e: MousePressedEvent): void {
+
+    }
+
     shape = new MarbleCircle();
-    locatoin = new Vector2D(300, 300);
     vector = new Vector2D(0, 0);
-
-    get location(): Vector2D { return this.shape.location; };
-    set location(value: Vector2D) { this.shape.location = value; };
 
     get isDie() { return this.shape.opacity < 0; }
 
-    growingSpeed = 40;
+    growingSpeed = 0.1;
     paledOutSpeed = 1;
 
     constructor(location: Vector2D) {
+        super();
         this.location = location;
-    }
-
-    translate(vector: Vector2D): void {
-
     }
 
     update(deltaTime: number, scene: Scene): void {
         const shape = this.shape;
 
         shape.opacity -= 1 * deltaTime;
-        shape.size += this.growingSpeed * deltaTime;
-        shape.draw(deltaTime, scene.renderer);
-    }
-
-    rotate(angle: number): void {
-        throw new Error("Method not implemented.");
+        this.scale += this.growingSpeed * deltaTime;
+        shape.draw(this.location.x, this.location.y, 0, this.scale, deltaTime, scene);
     }
 }
 
@@ -52,8 +48,9 @@ export class RippleServer extends Actor {
     update(deltaTime: number, scene: Scene): void {
         for (const r of this.ripples) {
             r.update(deltaTime, scene);
-            if (r.isDie)
+            if (r.isDie) {
                 this.ripples = this.ripples.filter(x => r !== x);
+            }
         }
     }
 

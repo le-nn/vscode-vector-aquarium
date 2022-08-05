@@ -1,7 +1,9 @@
 import * as React from "react";
 import { BoidController } from "./aquariam/BoidController";
 import { Color } from "./aquariam/core/Color";
+import { DrawableActor } from "./aquariam/core/DrawableActor";
 import { MousePressedEvent } from "./aquariam/core/MouseEvent";
+import { Random } from "./aquariam/core/Random";
 import { Scene } from "./aquariam/core/Scene";
 import { Vector2D } from "./aquariam/core/Vector2D";
 import { Fish } from "./aquariam/Fish";
@@ -17,89 +19,77 @@ const create = (context: CanvasRenderingContext2D, width: number, height: number
     const scene = new Scene(width, height, new Renderer(context));
     scene.append(new FoodProvider());
 
-    // scene.append(new RippleServer());
-    // scene.append(new Lophophorata({
-    //     location: new Vector2D(120, 200)
-    // }));
+    scene.append(new RippleServer());
+    scene.append(
+        new DrawableActor(
+            new Lophophorata(Random.getRandomColor()),
+            { location: new Vector2D(120, 200) }
+        )
+    );
 
-    // scene.append(
-    //     new TargetTrackingController(
-    //         new Jellyfish(
-    //             new Vector2D(
-    //                 240,
-    //                 280
-    //             )
-    //         ),
-    //         6
-    //     )
-    // );
-    // scene.append(
-    //     new TargetTrackingController(
-    //         new Jellyfish(
-    //             new Vector2D(
-    //                 120,
-    //                 360
-    //             )
-    //         ),
-    //         6
-    //     )
-    // );
+    scene.append(
+        new TargetTrackingController(
+            new DrawableActor(
+                new Jellyfish(Random.getRandomColor()),
+                { location: new Vector2D(240, 280) }
+            ),
+            6
+        )
+    );
 
-    // const s = new TargetTrackingController(
-    //     new Jellyfish(
-    //         new Vector2D(
-    //             220,
-    //             500
-    //         )
-    //     ),
-    //     6
-    // );
-    // scene.append(s);
+    scene.append(
+        new TargetTrackingController(
+            new DrawableActor(
+                new Jellyfish(Random.getRandomColor()),
+                { location: new Vector2D(120, 360) }
+            ),
+            6
+        )
+    );
+
+    scene.append(
+        new TargetTrackingController(
+            new DrawableActor(
+                new Jellyfish(Random.getRandomColor()),
+                { location: new Vector2D(220, 500) }
+            ),
+            6
+        )
+    );
 
     for (const code of [
         "#3f51b5",
-        // "#2196f3",
-        // "#00bcd4",
-        // "#009688",
-        // "#4caf50",
-        // "#cddc39",
-        // "#ffeb3b",
-        // "#ffc107",
-        // "#ff9800",
-        // "#ff5722",
-        // "#f44336",
-        // "#e91e63",
-        // "#9c27b0"
+        "#2196f3",
+        "#00bcd4",
+        "#009688",
+        "#4caf50",
+        "#cddc39",
+        "#ffeb3b",
+        "#ffc107",
+        "#ff9800",
+        "#ff5722",
+        "#f44336",
+        "#e91e63",
+        "#9c27b0"
     ]) {
         const c = Color.fromColorCode(code);
 
         const boid = new BoidController(
-            new Fish(
-                new Vector2D(
-                    0,
-                    0
-                ),
-                c
+            new DrawableActor(
+                new Fish(c),
+                { location: new Vector2D(0, 0) }
             )
         );
-
         scene.append(boid);
 
-        for (let j = 0; j < 0; j++) {
-            const coloney = new Fish(
-                new Vector2D(
-                    0,
-                    0
-                ),
-                c
-            );
-
+        for (let j = 0; j < Random.next(2, 5); j++) {
             const b = new TargetTrackingController(
-                coloney,
+                new DrawableActor(
+                    new Fish(c),
+                    { location: new Vector2D(0, 0) }
+                ),
             );
-            boid.addBoid(
-                b
-            );
+            boid.addBoid(b);
         }
     }
 

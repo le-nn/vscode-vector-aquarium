@@ -1,25 +1,26 @@
-import { Vector2D } from "./core/Vector2D";
-import { IColony } from "./IColoney";
-import { IController } from "./IController";
+import { Actor } from "./core/Actor";
+import { MousePressedEvent } from "./core/MouseEvent";
 import { Scene } from "./core/Scene";
+import { Shape } from "./shapes/Shape";
 
-export class SweyFallingController<T extends IColony> implements IController {
-    colony: T;
+export class SweyFallingController<TActor extends Actor = Actor> extends Actor {
     private waveOffcet = 0;
-    isDie = false;
 
+    actor: TActor;
+    isDie = false;
     speed = 80;
     waveWidth = 60;
 
-    constructor(c: T) {
-        this.colony = c;
+    constructor(c: TActor) {
+        super();
+        this.actor = c;
     }
 
     update(deltaTime: number, scene: Scene): void {
         this.waveOffcet += 0.1;
 
-        const y = this.colony.location.y;
-        this.colony.translate({
+        const y = this.actor.location.y;
+        this.actor.translateFromVector({
             x: Math.sin(this.waveOffcet) * this.waveWidth * deltaTime,
             y: this.speed * deltaTime
         });
@@ -28,6 +29,14 @@ export class SweyFallingController<T extends IColony> implements IController {
             this.isDie = true;
         }
 
-        this.colony.update(deltaTime, scene);
+        this.actor.update(deltaTime, scene);
+    }
+
+    setup(scene: Scene): void {
+
+    }
+
+    pressed(e: MousePressedEvent): void {
+
     }
 }

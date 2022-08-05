@@ -1,122 +1,88 @@
-import { IColony } from "./IColoney";
 import { IController } from "./IController";
 import { Vector2D } from "./core/Vector2D";
 import { Numerics } from "./core/Numerics";
 import { Scene } from "./core/Scene";
 import { TargetTrackingController } from "./TargetTrackingController";
+import { Color } from "./core/Color";
+import { Actor } from "./core/Actor";
+import { MarbleCircle } from "./shapes/MarbleCircle";
+import { Shape } from "./shapes/Shape";
+import { MousePressedEvent } from "./core/MouseEvent";
 
-/// <summary>
-/// コントローラーを群れとして表現します。
-/// </summary>
-/// <typeparam name="T"></typeparam>
-export class BoidController extends TargetTrackingController<IColony> {
-    /// <summary>
-    /// 群れに属する図形のリスト
-    /// </summary>
-    public readonly boids: TargetTrackingController<IColony>[] = [];
+export class BoidController extends TargetTrackingController<Actor> {
+    public readonly children: TargetTrackingController<Actor>[] = [];
+    private readonly r1 = 8; // パラメータ：群れの中心に向かう度合
+    private readonly r2 = 16; // パラメータ：仲間を避ける度合
+    private readonly r3 = 2; // パラメータ：群れの平均速度に合わせる度合
 
-    /// <summary>
-    /// ボスとなる図形
-    /// </summary>
     public get boss() {
-        return this.colony;
+        return this.actor;
     }
 
     avoidThresholdDist = 30;
-
-    readonly r1 = 8; // パラメータ：群れの中心に向かう度合
-    readonly r2 = 16; // パラメータ：仲間を避ける度合
-    readonly r3 = 2; // パラメータ：群れの平均速度に合わせる度合
-
     angle = 0;
 
-    /// <summary>
-    /// コンストラクタ1
-    /// </summary>1
-    /// <param name="controller"></param>
-    public constructor(boss: IColony) {
+    public constructor(boss: Actor) {
         super(boss);
     }
-
-    // setSpeed(speed: number) {
-    //     this.speedBias = speed;
-    // }
 
     scene: Scene | null = null;
 
     setup(scene: Scene): void {
         super.setup(scene);
-        for (const item of this.boids) {
+        for (const item of this.children) {
             item.setup(scene);
         }
     }
 
-    /// <summary>
-    /// 群れとして表現するコントローラーを追加します。
-    /// </summary>
-    /// <param name="colony"></param>
-    public addBoid(controller: TargetTrackingController<IColony>) {
-        this.boids.push(controller);
+    public addBoid(controller: TargetTrackingController<Actor>) {
+        this.children.push(controller);
         this.scene && controller.setup(this.scene);
         controller.autoTarget = false;
         controller.smoothCurveTriggerDistance = Infinity;
         controller.noizeSize = 0;
     }
 
-    /// <summary>
-    /// 描画処理
-    /// </summary>
-    /// <param name="canvas">描画するキャンバス</param>
-    /// <param name="deltaTime">直前の描画にかかった時間</param>
     public update(deltaTime: number, scene: Scene) {
-        // const movement = this.getMovementVector(this.boss);
-        // this.boss.translate(movement);
         super.update(deltaTime, scene);
 
-
-        for (const item of this.boids) {
-            // item.checkFoodAction();
-
-            // if (!item.targetLocation) {
+        for (const item of this.children) {
             this.drawAsBoid(item, deltaTime, scene);
-            //  }
         }
 
         // DEBUG
         // this.targetLocation && scene.renderer.drawCircle(this.targetLocation!.x, this.targetLocation.y, 20, new Color(255, 0, 0, 0))
     }
 
-    private drawAsBoid(controller: TargetTrackingController<IColony>, deltaTime: number, scene: Scene) {
-        const movement = this.getMovementVector(controller.colony);
+    private drawAsBoid(controller: TargetTrackingController<Actor>, deltaTime: number, scene: Scene) {
+        const { x, y } = this.getMovementVector(controller.actor);
 
         // 1フレームでtargetLocationに到達させる
         const speed = Numerics.dist(
-            controller.colony.location,
+            controller.actor.location,
             new Vector2D(
-                movement.x + (controller.targetLocation?.x ?? 0),
-                movement.y + (controller.targetLocation?.y ?? 0)
+                x + (controller.targetLocation?.x ?? 0),
+                y + (controller.targetLocation?.y ?? 0)
             ));
         controller.translateTargetLocation(
-            new Vector2D(
-                movement.x,
-                movement.y
-            ),
+            new Vector2D(x, y),
             speed);
         controller.update(deltaTime, scene);
     }
 
-    getMovementVector(colony: IColony): Vector2D {
+    getMovementVector(actor: Actor): Vector2D {
         let vx = 0;
         let vy = 0;
 
-        let result = this.getVectorToCenter(colony);
+        let result = this.getVectorToCenter(actor);
         vx += result.x * this.r1;
         vy += result.y * this.r1;
 
-        result = this.getVectorToAvoid(colony);
+        result = this.getVectorToAvoid(actor);
         vx += result.x * this.r2;
         vy += result.y * this.r2;
-        result = this.getVectorToAverage(colony);
+
+        result = this.getVectorToAverage(actor);
         vx += result.x * this.r3;
         vy += result.y * this.r3;
 
@@ -129,25 +95,22 @@ export class BoidController extends TargetTrackingController<IColony> {
         };
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    private getVectorToCenter(colony: IColony): Vector2D {
+    private getVectorToCenter(actor: Actor): Vector2D {
         let vx = 0; let vy = 0;
-        const x = colony.location.x;
-        const y = colony.location.y;
+        const x = actor.location.x;
+        const y = actor.location.y;
 
-        for (const item of this.boids) {
+        for (const item of this.children) {
             // 参照が同じであればcontinue
-            if (item.colony === colony) {
+            if (item.actor === actor) {
                 continue;
             }
-            const location = item.colony.location;
+            const location = item.actor.location;
             vx += location.x;
             vy += location.y;
         }
 
-        const count = this.boids.length - 1;
+        const count = this.children.length - 1;
         vx /= count;
         vy /= count;
 
@@ -159,46 +122,39 @@ export class BoidController extends TargetTrackingController<IColony> {
         return Numerics.normalize(new Vector2D(vx - x, vy - y));
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    private getVectorToAvoid(colony: IColony): Vector2D {
+    private getVectorToAvoid(actor: Actor): Vector2D {
         const avoidThresholdDist = this.avoidThresholdDist;
         let vx = 0; let vy = 0;
-        for (const item of this.boids) {
-            // 参照が同じであればcontinue
-            if (item.colony === colony) {
+        for (const item of this.children) {
+            if (item.actor === actor) {
                 continue;
             }
 
-            const location = item.colony.location;
-            if (Numerics.dist(location, colony.location) < avoidThresholdDist) {
-                vx -= (location.x - colony.location.x);
-                vy -= (location.y - colony.location.y);
+            const location = item.actor.location;
+            if (Numerics.dist(location, actor.location) < avoidThresholdDist) {
+                vx -= (location.x - actor.location.x);
+                vy -= (location.y - actor.location.y);
             }
         }
 
         const boss = this.boss;
-        if (Numerics.dist(boss.location, colony.location) < avoidThresholdDist) {
-            vx -= boss.location.x - colony.location.x;
-            vy -= boss.location.y - colony.location.y;
+        if (Numerics.dist(boss.location, actor.location) < avoidThresholdDist) {
+            vx -= boss.location.x - actor.location.x;
+            vy -= boss.location.y - actor.location.y;
         }
 
         return Numerics.normalize(new Vector2D(vx, vy));
     }
 
-    /// <summary>
-    /// 整列
-    /// </summary>
-    private getVectorToAverage(colony: IColony): Vector2D {
+    private getVectorToAverage(actor: Actor): Vector2D {
         let vx = 0; let vy = 0;
 
-        for (const item of this.boids) {
+        for (const item of this.children) {
             // 参照が同じであればcontinue
-            if (item.colony === colony) {
+            if (item.actor === actor) {
                 continue;
             }
-            const vector = item.colony.vector;
+            const vector = item.actor.vector;
             vx += vector.x;
             vy += vector.y;
         }
@@ -207,7 +163,7 @@ export class BoidController extends TargetTrackingController<IColony> {
         vy += this.boss.vector.y;
 
         // count = boids - own + boss
-        const count = this.boids.length;
+        const count = this.children.length;
         vx /= count;
         vy /= count;
 
@@ -217,7 +173,7 @@ export class BoidController extends TargetTrackingController<IColony> {
     shock(location: Vector2D) {
         super.shock(location);
 
-        for (const item of this.boids) {
+        for (const item of this.children) {
             item.shock(location);
         }
     }

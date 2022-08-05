@@ -1,55 +1,56 @@
 import { Actor } from "./core/Actor";
 import { Color } from "./core/Color";
+import { DrawableActor } from "./core/DrawableActor";
 import { MousePressedEvent } from "./core/MouseEvent";
 import { Numerics } from "./core/Numerics";
 import { Random } from "./core/Random";
 import { Scene } from "./core/Scene";
 import { Vector2D } from "./core/Vector2D";
-import { IColony } from "./IColoney";
 import { MarbleCircle } from "./shapes/MarbleCircle";
+import { Shape } from "./shapes/Shape";
 
-export class Branch implements IColony {
+export class Branch extends Shape {
+    readonly segments: number = 0;
+
     private wave = 0;
-    readonly segments;
-    angle = 0;
     private wave2 = 0;
-
     color: Color;
-    readonly segmentLength = Random.next(18, 23);
-    readonly maxSegmentPointSize = 5;
+    readonly segmentLength = Random.next(50, 70);
+    readonly maxSegmentPointSize = 7;
     speed = 0.1;
 
     readonly points: number[] = [];
     readonly pointFlickingSpeeds: number[] = [];
 
     constructor(c: Color) {
+        super();
+
         this.wave2 = Random.next(1000);
         this.segments = 3 + Random.next(8);
-        this.angle = Random.next(0, 360);
 
-        this.points = [
-            ...new Array(this.segments)
-        ].map(x => Random.next(this.segments) + Random.nextDouble());
+        this.points = [...new Array(this.segments)].map(x => Random.next(this.segments) + Random.nextDouble());
+
         this.pointFlickingSpeeds = [...new Array(this.segments)].map(x => Random.next(15, 30));
         this.color = c;
     }
 
-    update(deltaTime: number, scene: Scene): void {
+    draw(x: number, y: number, angle: number, scale: number, deltaTime: number, scene: Scene): void {
         const renderer = scene.renderer;
 
         renderer.pushMatrix();
-        renderer.translate(this.location.x, this.location.y);
-        renderer.rotate(Numerics.toRadians(this.angle));
+        renderer.translate(x, y);
+        renderer.rotate(Numerics.toRadians(angle));
 
         let wave = this.wave;
         const segments = this.segments;
         let wave2 = this.wave2;
+
         const rand = () => Random.nextDouble() * 0.1 * (Random.next(0, 1) === 0 ? -1 : 1);
 
         const c = this.color;
-        const bgc = new Color(c.r, c.g, c.b, 0.1);
-        const pc = new Color(c.r, c.g, c.b, 1);
-        const pc2 = new Color(c.r, c.g, c.b, 0.13);
+        const bgc = new Color(c.r, c.g, c.b, 0.12);
+        const pc = new Color(c.r, c.g, c.b, 0.48);
+        const pc2 = new Color(c.r, c.g, c.b, 0.09);
         const segmentLength = this.segmentLength;
         const maxSegmentPointSize = this.maxSegmentPointSize;
         const points = this.points;
@@ -80,83 +81,40 @@ export class Branch implements IColony {
 
         renderer.popMatrix();
     }
-
-    pressed(e: MousePressedEvent): void {
-
-    }
-
-    location = new Vector2D(0, 0);
-    vector = new Vector2D(0, 0);
-
-    translate(vector: Vector2D): void {
-
-    }
-
-    rotate(angle: number): void {
-
-    }
-
 }
 
-interface LophophorataOption {
-    location?: Vector2D;
-    branchCount?: number;
-}
-
-export class Lophophorata extends Actor implements IColony {
-    setup(scene: Scene): void {
-    }
-    pressed(e: MousePressedEvent): void {
-
-    }
-    location = new Vector2D(0, 0);
-    vector = new Vector2D(0, 0);
+export class Lophophorata extends Shape {
     branchCount = 20;
-
-    branches: Branch[] = [];
-
+    branches: DrawableActor<Branch>[] = [];
     jointLayerColors: MarbleCircle;
-    jointCircleSize = 14;
 
-    constructor(option?: LophophorataOption) {
+    constructor(color: Color, branchCount?: number) {
         super();
-
-        if (option) {
-            Object.assign(this, option);
-        }
-
-        const c = Random.getRandomColor();
+        this.branchCount = branchCount ?? this.branchCount;
 
         this.jointLayerColors = new MarbleCircle({
-            color: c,
-            size: 5,
-            location: option?.location
+            color,
         });
 
         const branches = [];
         for (let i = 0; i < this.branchCount; i++) {
-            branches.push(new Branch(c));
+            branches.push(
+                new DrawableActor(
+                    new Branch(color),
+                    { angle: Random.next(0, 360) }
+                )
+            );
         }
+
         this.branches = branches;
     }
 
-    translate(vector: Vector2D): void {
-        this.vector = vector;
-        this.location = new Vector2D(this.location.x + vector.x, this.location.y + vector.y);
-    }
-
-    update(deltaTime: number, scene: Scene): void {
-        const render = scene.renderer;
-
+    draw(x: number, y: number, angle: number, scale: number, deltaTime: number, scene: Scene): void {
         for (const b of this.branches) {
-            b.location = this.location;
+            b.setLocation(new Vector2D(x, y));
             b.update(deltaTime, scene);
         }
 
-        this.jointLayerColors.draw(deltaTime, scene.renderer);
-    }
-
-    rotate(angle: number): void {
-
+        this.jointLayerColors.draw(x, y, angle, scale * 0.5, deltaTime, scene);
     }
 }

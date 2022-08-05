@@ -1,20 +1,18 @@
 import { Color } from "../core/Color";
 import { Random } from "../core/Random";
+import { Scene } from "../core/Scene";
 import { Vector2D } from "../core/Vector2D";
 import { IRenderer } from "../IRenderer";
 import { Shape } from "./Shape";
 
 interface MarbleCircleShapeOption {
     color?: Color;
-    location?: Vector2D;
     opacity?: number;
     layersOverride?: Color[];
     layerNum?: number;
-    size?: number;
 }
 
 export class MarbleCircle extends Shape {
-    location = new Vector2D(0, 0);
     size = 10;
     opacity = 1;
     layers!: Color[];
@@ -42,12 +40,14 @@ export class MarbleCircle extends Shape {
         }
     }
 
-    draw(deltaTime: number, renderer: IRenderer): void {
-        let s = this.size;
+    draw(x: number, y: number, angle: number, scale: number, deltaTime: number, scene: Scene): void {
+        const renderer = scene.renderer;
+        let s = this.size * scale;
+        const bias = 1 / this.layers.length;
         for (const c of this.layers) {
             c.a = this.opacity;
-            renderer.drawCircle(this.location.x, this.location.y, s, c);
-            s = Math.max(0, s - this.size * 0.2);
+            renderer.drawCircle(x, y, s, c);
+            s = Math.max(0, s - s * bias);
         }
     }
 }
