@@ -1,4 +1,4 @@
-import { IRenderer } from "./IRenderer";
+import { IRenderer } from "./core/IRenderer";
 import { Color } from "./core/Color";
 import { Vector2D } from "./core/Vector2D";
 

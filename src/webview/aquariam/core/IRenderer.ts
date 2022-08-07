@@ -1,5 +1,5 @@
-import { Color } from "./core/Color";
-import { Vector2D } from "./core/Vector2D";
+import { Color } from "./Color";
+import { Vector2D } from "./Vector2D";
 
 export interface IRenderer {
     drawStrokeCircle(x: number, y: number, r: number, lineWidth: number, color: Color): void;

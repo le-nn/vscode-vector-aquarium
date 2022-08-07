@@ -3,7 +3,7 @@ import { IController } from "./IController";
 import { Random } from "./core/Random";
 import { Numerics } from "./core/Numerics";
 import { Color } from "./core/Color";
-import { IRenderer } from "./IRenderer";
+import { IRenderer } from "./core/IRenderer";
 import { Scene } from "./core/Scene";
 import { Shape } from "./shapes/Shape";
 

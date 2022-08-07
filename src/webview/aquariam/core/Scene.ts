@@ -1,5 +1,5 @@
 import { Actor } from "./Actor";
-import { IRenderer } from "../IRenderer";
+import { IRenderer } from "./IRenderer";
 import { animationFrame } from "../utils/animationFrame";
 import { MousePressedEvent } from "./MouseEvent";
 

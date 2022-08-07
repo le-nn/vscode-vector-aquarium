@@ -4,7 +4,7 @@ import { MousePressedEvent } from "./core/MouseEvent";
 import { Random } from "./core/Random";
 import { Scene } from "./core/Scene";
 import { Vector2D } from "./core/Vector2D";
-import { IRenderer } from "./IRenderer";
+import { IRenderer } from "./core/IRenderer";
 import { MarbleCircle } from "./shapes/MarbleCircle";
 import { Shape } from "./shapes/Shape";
 
@@ -17,12 +17,10 @@ export class Ripple extends Actor {
     }
 
     shape = new MarbleCircle();
-    vector = new Vector2D(0, 0);
 
     get isDie() { return this.shape.opacity < 0; }
 
-    growingSpeed = 0.1;
-    paledOutSpeed = 1;
+    growingSpeed = 8;
 
     constructor(location: Vector2D) {
         super();

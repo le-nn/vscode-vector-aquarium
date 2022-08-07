@@ -2,7 +2,7 @@ import { Color } from "../core/Color";
 import { Random } from "../core/Random";
 import { Scene } from "../core/Scene";
 import { Vector2D } from "../core/Vector2D";
-import { IRenderer } from "../IRenderer";
+import { IRenderer } from "../core/IRenderer";
 import { Shape } from "./Shape";
 
 interface MarbleCircleShapeOption {
@@ -28,7 +28,8 @@ export class MarbleCircle extends Shape {
 
         if (!this.layers) {
             const c = this.color ?? Random.getRandomColor();
-            this.layers = [...new Array(this.layerNum)].map(_ => c)
+            this.layers = [...new Array(this.layerNum)]
+                .map(_ => c)
                 .map(c => {
                     const hsv = c.toHsv();
                     return Color.fromHsv(
