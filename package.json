@@ -1,0 +1,75 @@
+{
+  "name": "vscode-vector-aquarium",
+  "displayName": "vscode-vector-aquarium",
+  "description": "Make your vscode an aquarium and heal you !",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.69.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:vscode-vector-aquarium.open",
+    "onView:vscode-vector-aquarium.view"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vscode-vector-aquarium",
+          "title": "Vector Aquarium",
+          "icon": "assets/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "vscode-vector-aquarium": [
+        {
+          "type": "webview",
+          "id": "vscode-vector-aquarium.view",
+          "name": "Vector Aquarium"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "vscode-vector-aquarium.open",
+        "title": "Vector Aquarium"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "start": "vite",
+    "build:view": "vite build -c ./vite.config.ts"
+  },
+  "devDependencies": {
+    "@emotion/core": "^11.0.0",
+    "@emotion/react": "^11.10.0",
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "16.x",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "@types/vscode": "^1.69.0",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "@vitejs/plugin-react": "^2.0.0",
+    "@vscode/test-electron": "^2.1.5",
+    "eslint": "^8.20.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.7.4",
+    "use-resize-observer": "^9.0.2",
+    "vite": "^3.0.4"
+  }
+}
