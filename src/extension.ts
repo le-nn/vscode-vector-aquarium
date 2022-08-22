@@ -11,64 +11,60 @@ const outputDir = (env.Tmp ? path.join(env.Tmp, "vscode-vector-aquarium") : "");
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-vector-aquarium" is now active!');
+    // Use the console to output diagnostic information (console.log) and errors (console.error)
+    // This line of code will only be executed once when your extension is activated
+    console.log('Congratulations, your extension "vscode-vector-aquarium" is now active!');
 
-	const setting = new Setting(context.extensionUri);
-	context.subscriptions.push(
-		vscode.window.registerWebviewViewProvider('vscode-vector-aquarium.view', setting)
-	);
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider('vscode-vector-aquarium.view', new Setting(context.extensionUri))
+    );
 
-	let disposable = vscode.commands.registerCommand('vscode-vector-aquarium.open', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from vscode-vector-aquarium!');
+    context.subscriptions.push(vscode.commands.registerCommand('vscode-vector-aquarium.open', () => {
+        // The code you place here will be executed every time your command is executed
+        // Display a message box to the user
+        vscode.window.showInformationMessage('Hello World from vscode-vector-aquarium!');
 
-		const panel = vscode.window.createWebviewPanel(
-			"vector-aquarium",
-			"vector-aquarium",
-			vscode.ViewColumn.Beside,
-			{
-				enableScripts: true,
-				enableFindWidget: true,
-				localResourceRoots: [vscode.Uri.file(outputDir)],
-			}
-		);
+        const panel = vscode.window.createWebviewPanel(
+            "vector-aquarium",
+            "vector-aquarium",
+            vscode.ViewColumn.Beside,
+            {
+                enableScripts: true,
+                enableFindWidget: true,
+                localResourceRoots: [vscode.Uri.file(outputDir)],
+            }
+        );
 
-		panel.webview.html = "<h1>Hellwefawefaweo !!!!!</h1>";
-	});
-
-	context.subscriptions.push(disposable); 
+        panel.webview.html = "<h1>Hellwefawefaweo !!!!!</h1>";
+    }));
 }
-
 
 // this method is called when your extension is deactivated
 export function deactivate() { }
 
 class Setting implements vscode.WebviewViewProvider {
-	constructor(readonly extensionUri: vscode.Uri) {
+    constructor(readonly extensionUri: vscode.Uri) {
 
-	}
+    }
 
-	resolveWebviewView(
-		webviewView: vscode.WebviewView,
-		context: vscode.WebviewViewResolveContext<unknown>,
-		token: vscode.CancellationToken
-	): void | Thenable<void> {
-		const scriptPathOnDisk = vscode.Uri.joinPath(this.extensionUri, 'dist', 'index.js');
-		const scriptUri = webviewView.webview.asWebviewUri(scriptPathOnDisk);
+    resolveWebviewView(
+        webviewView: vscode.WebviewView,
+        context: vscode.WebviewViewResolveContext<unknown>,
+        token: vscode.CancellationToken
+    ): void | Thenable<void> {
+        const scriptPathOnDisk = vscode.Uri.joinPath(this.extensionUri, 'dist', 'index.js');
+        const scriptUri = webviewView.webview.asWebviewUri(scriptPathOnDisk);
 
-		webviewView.webview.options = { enableScripts: true };
-		webviewView.webview.html = this.buildView(scriptUri);
+        webviewView.webview.options = { enableScripts: true };
+        webviewView.webview.html = this.buildView(scriptUri);
 
-	}
+    }
 
-	private buildView(scriptUri: vscode.Uri) {
-		// Use a nonce to only allow specific scripts to be run
-		const nonce = getNonce();
+    private buildView(scriptUri: vscode.Uri) {
+        // Use a nonce to only allow specific scripts to be run
+        const nonce = getNonce();
 
-		return `
+        return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,14 +79,14 @@ class Setting implements vscode.WebviewViewProvider {
 </body>
 </html>
 `;
-	}
+    }
 }
 
 function getNonce() {
-	let text = '';
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	for (let i = 0; i < 32; i++) {
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-	}
-	return text;
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 32; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
 }
