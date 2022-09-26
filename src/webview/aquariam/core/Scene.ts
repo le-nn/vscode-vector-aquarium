@@ -27,6 +27,7 @@ export class Scene {
 
     append(actor: Actor) {
         this._actors.push(actor);
+        actor.setup(this);
     }
 
     remove(actor: Actor) {

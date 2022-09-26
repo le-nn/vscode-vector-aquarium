@@ -33,7 +33,8 @@ export abstract class Actor implements Transform {
         this.location.y = location.y;
     }
 
-    public translateFromVector(vector: Vector2D) {
+    public translateFromVector(vector: Vector2D) {  
+
         this.vector = vector;
         this.location.x += vector.x;
         this.location.y += vector.y;

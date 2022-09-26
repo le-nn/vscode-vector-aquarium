@@ -1,35 +1,32 @@
-import { IController } from "./IController";
 import { Vector2D } from "./core/Vector2D";
 import { Numerics } from "./core/Numerics";
 import { Scene } from "./core/Scene";
 import { TargetTrackingController } from "./TargetTrackingController";
-import { Color } from "./core/Color";
 import { Actor } from "./core/Actor";
-import { MarbleCircle } from "./shapes/MarbleCircle";
-import { Shape } from "./shapes/Shape";
-import { MousePressedEvent } from "./core/MouseEvent";
 
 export class BoidController extends TargetTrackingController<Actor> {
-    public readonly children: TargetTrackingController<Actor>[] = [];
     private readonly r1 = 8; // パラメータ：群れの中心に向かう度合
     private readonly r2 = 16; // パラメータ：仲間を避ける度合
     private readonly r3 = 2; // パラメータ：群れの平均速度に合わせる度合
+    private scene: Scene | null = null;
+
+    public readonly children: TargetTrackingController<Actor>[] = [];
 
     public get boss() {
         return this.actor;
     }
 
-    avoidThresholdDist = 30;
-    angle = 0;
+    public avoidThresholdDist = 30;
+
+    public angle = 0;
 
     public constructor(boss: Actor) {
         super(boss);
     }
 
-    scene: Scene | null = null;
-
     setup(scene: Scene): void {
         super.setup(scene);
+        this.scene = scene;
         for (const item of this.children) {
             item.setup(scene);
         }
@@ -37,10 +34,16 @@ export class BoidController extends TargetTrackingController<Actor> {
 
     public addBoid(controller: TargetTrackingController<Actor>) {
         this.children.push(controller);
-        this.scene && controller.setup(this.scene);
+        if (!this.scene) {
+            throw new Error("This actor is not initialized");
+        }
+
+        this.scene.append(controller)
+
+
         controller.autoTarget = false;
         controller.smoothCurveTriggerDistance = Infinity;
-        controller.noizeSize = 0;
+        controller.noiseSize = 0;
     }
 
     public update(deltaTime: number, scene: Scene) {

@@ -25,8 +25,6 @@ const scale = () => typeof window !== "undefined" ? window.devicePixelRatio : 1;
 export const Coloney = (props: ColoneyProps) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const { ref, width, height } = useResizeObserver<HTMLCanvasElement>();
-
-
     const isInitialized = useRef(false);
 
     useEffect(() => {
@@ -52,7 +50,7 @@ export const Coloney = (props: ColoneyProps) => {
 
         }
         else {
-            throw new Error("The canvas element couldn't initialized.");
+            throw new Error("The canvas element couldn't be initialized.");
         }
     }, [width, height]);
 

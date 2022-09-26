@@ -14,7 +14,7 @@ export class Fish extends Shape {
     private _sizeBias = 0.3;
     private _segLength = 14.0;
 
-    segmentlocation = new Array<Vector2D>(10);
+    segmentLocation = new Array<Vector2D>(10);
     finAngle = 0;
     finDirection = 30;
     lightSegmentIndex = -1;
@@ -28,7 +28,7 @@ export class Fish extends Shape {
         super();
 
         for (let i = 0; i < 10; i++) {
-            this.segmentlocation[i] = new Vector2D(0, 0);
+            this.segmentLocation[i] = new Vector2D(0, 0);
         }
 
         this.color = color || Random.getRandomColor();
@@ -39,8 +39,8 @@ export class Fish extends Shape {
         for (let i = 0; i < 8; i++) {
             this.drawSegment(
                 i + 1,
-                this.segmentlocation[i].x,
-                this.segmentlocation[i].y,
+                this.segmentLocation[i].x,
+                this.segmentLocation[i].y,
                 scale,
                 scene,
                 deltaTime
@@ -52,11 +52,11 @@ export class Fish extends Shape {
         const size = scale * this._sizeBias;
         const segLength = this._segLength;
 
-        const dx = xin - this.segmentlocation[i].x;
-        const dy = yin - this.segmentlocation[i].y;
+        const dx = xin - this.segmentLocation[i].x;
+        const dy = yin - this.segmentLocation[i].y;
         const angle = Math.atan2(dy, dx);
-        const x = this.segmentlocation[i].x = (xin - Math.cos(angle) * segLength * size);
-        const y = this.segmentlocation[i].y = (yin - Math.sin(angle) * segLength * size);
+        const x = this.segmentLocation[i].x = (xin - Math.cos(angle) * segLength * size);
+        const y = this.segmentLocation[i].y = (yin - Math.sin(angle) * segLength * size);
         const renderer = scene.renderer;
 
         // セグメントを光らせる
@@ -112,8 +112,8 @@ export class Fish extends Shape {
             );
 
             renderer.drawCircle(
-                this.segmentlocation[i].x,
-                this.segmentlocation[i].y,
+                this.segmentLocation[i].x,
+                this.segmentLocation[i].y,
                 (10 - i) * 1.2 * size,
                 this.color
             );
@@ -121,14 +121,14 @@ export class Fish extends Shape {
         // odd column
         else if (i % 2 === 1) {
             renderer.drawCircle(
-                this.segmentlocation[i].x,
-                this.segmentlocation[i].y,
+                this.segmentLocation[i].x,
+                this.segmentLocation[i].y,
                 1.5 * size,
                 this.color
             );
             renderer.drawStrokeCircle(
-                this.segmentlocation[i].x,
-                this.segmentlocation[i].y,
+                this.segmentLocation[i].x,
+                this.segmentLocation[i].y,
                 (10 - i) * 1.2 * size,
                 7,
                 this.color
@@ -137,8 +137,8 @@ export class Fish extends Shape {
         // even column
         else {
             renderer.drawCircle(
-                this.segmentlocation[i].x,
-                this.segmentlocation[i].y,
+                this.segmentLocation[i].x,
+                this.segmentLocation[i].y,
                 (10 - i) * 0.5 * size,
                 this.color);
         }

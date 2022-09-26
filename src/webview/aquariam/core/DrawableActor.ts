@@ -20,7 +20,14 @@ export class DrawableActor<TShape extends Shape = Shape> extends Actor {
     }
 
     update(deltaTime: number, scene: Scene): void {
-        this.shape.draw(this.location.x, this.location.y, this.angle, this.scale, deltaTime, scene);
+        this.shape.draw(
+            this.location.x,
+            this.location.y,
+            this.angle,
+            this.scale,
+            deltaTime,
+            scene
+        );
     }
 
     pressed(e: MousePressedEvent): void {

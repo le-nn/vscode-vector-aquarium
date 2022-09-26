@@ -3,8 +3,8 @@ import { MousePressedEvent } from "./core/MouseEvent";
 import { Scene } from "./core/Scene";
 import { Shape } from "./shapes/Shape";
 
-export class SweyFallingController<TActor extends Actor = Actor> extends Actor {
-    private waveOffcet = 0;
+export class SwayFallingController<TActor extends Actor = Actor> extends Actor {
+    private waveOffset = 0;
 
     actor: TActor;
     isDie = false;
@@ -17,11 +17,11 @@ export class SweyFallingController<TActor extends Actor = Actor> extends Actor {
     }
 
     update(deltaTime: number, scene: Scene): void {
-        this.waveOffcet += 0.1;
+        this.waveOffset += 0.1;
 
         const y = this.actor.location.y;
         this.actor.translateFromVector({
-            x: Math.sin(this.waveOffcet) * this.waveWidth * deltaTime,
+            x: Math.sin(this.waveOffset) * this.waveWidth * deltaTime,
             y: this.speed * deltaTime
         });
 

@@ -57,7 +57,6 @@ export class Branch extends Shape {
         const pointFlickingSpeeds = this.pointFlickingSpeeds;
 
         for (let i = 0; i < segments; i++) {
-            // 2種類のwaveを重ね合わせることで、不規則なぐにゃぐにゃを表現
             const theta = (Math.sin(wave2) * 5 + Math.sin(wave) * 10 + rand());
 
             const to = Numerics.lerp(segmentLength, segmentLength * 0.5, i / segments);
@@ -96,10 +95,10 @@ export class Lophophorata extends Shape {
             color,
         });
 
-        const branches = [];
+        const branches: DrawableActor<Branch>[] = [];
         for (let i = 0; i < this.branchCount; i++) {
             branches.push(
-                new DrawableActor(
+                new DrawableActor<Branch>(
                     new Branch(color),
                     { angle: Random.next(0, 360) }
                 )

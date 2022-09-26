@@ -1,195 +1,220 @@
-import { Vector2D } from "./core/Vector2D";
-import { IController } from "./IController";
-import { Random } from "./core/Random";
-import { Numerics } from "./core/Numerics";
-import { Scene } from "./core/Scene";
-import { Actor } from "./core/Actor";
-import { MousePressedEvent } from "./core/MouseEvent";
-import { FoodProvider } from "./FoodProvider";
-import { DrawableActor } from "./core/DrawableActor";
+import { Vector2D } from "./core/Vector2D"
+import { IController } from "./IController"
+import { Random } from "./core/Random"
+import { Numerics } from "./core/Numerics"
+import { Scene } from "./core/Scene"
+import { Actor } from "./core/Actor"
+import { MousePressedEvent } from "./core/MouseEvent"
+import { FoodProvider } from "./FoodProvider"
+import { DrawableActor } from "./core/DrawableActor"
+import { Color } from "./core/Color"
+import { EmptyActor } from "./core/EmptyActor"
 
 export class TargetTrackingControllerOption {
-    public speedBias = 1;
+    public speedBias = 1
 }
 
 export class TargetTrackingController<T extends Actor> extends Actor implements IController<Actor> {
-    actor: T;
-    public speed = 1.0;
-    speedBias = 2;
-    targetLocation: Vector2D | null = null;
-    food: DrawableActor | null = null;
-    smoothCurveRate: number;
-    autoTarget = true;
-    endForceTrack: null | (() => void) = null;
-    shockAvoidDistance = 80;
-    shockThreshouldDistance = 80;
-    foodTriggerDistance = 120;
-    isShowEnabled = true;
-    isFoodEnabled = true;
-    foodViewableAngleDeg = 160;
-    foodProvider: FoodProvider | null = null;
-    smoothCurveTriggerDistance = Infinity;
-    debug = false;
+    private _actualSpeed = 0
 
-    get isForceTracking() {
-        return !!this.endForceTrack;
+    private _targetLocation: Vector2D | null = null
+    private food: DrawableActor | null = null
+    private smoothCurveRate: number = 0.1
+
+    private endForceTrack: null | (() => void) = null
+    private shockAvoidDistance = 120
+    private shockThreshouldDistance = 80
+    private foodTriggerDistance = 120
+
+    private foodViewableAngleDeg = 160
+    private foodProvider: FoodProvider | null = null
+    private debug = false
+
+    public noiseSize = 1
+
+    public autoTarget = true
+
+    public actor: T
+
+    public speed = 1.0
+
+    public smoothCurveTriggerDistance = Infinity
+
+    public isShowEnabled = true
+
+    public isFoodEnabled = true
+
+    private get speedBias() {
+        return 125 * this.speed
     }
 
-    noizeSize = 1;
+    get targetLocation() {
+        return this._targetLocation
+    }
+
+    get isForceTracking() {
+        return !!this.endForceTrack
+    }
 
     public constructor(
         actor: T,
-        speed = 125,
-        smoothCurveRate = 0.01
+        speed: number = 1
     ) {
-        super();
-
-        this.actor = actor;
-        this.speedBias = speed;
-        this.smoothCurveRate = smoothCurveRate;
-        // actor.IsFlicking = false;
+        super()
+        this.speed = speed
+        this.actor = actor
     }
 
-    setup(scene: Scene): void {
-        const p = scene.actors.find(x => x instanceof FoodProvider);
+    public setup(scene: Scene): void {
+        const p = scene.actors.find(x => x instanceof FoodProvider)
         if (p) {
-            this.foodProvider = p as FoodProvider;
+            this.foodProvider = p as FoodProvider
         }
     }
 
-    pressed(e: MousePressedEvent): void {
-        this.shock(e.position);
+    public pressed(e: MousePressedEvent): void {
+        this.shock(e.position)
     }
 
-    update(deltaTime: number, scene: Scene) {
-        this.endForceTrack?.();
-        const location = this.actor.location;
-
-        // 捕食できる餌がないかチェックしあればトラッキング
-        this.checkFoodAction();
+    public update(deltaTime: number, scene: Scene) {
+        this.endForceTrack?.()
+        const location = this.actor.location
+        this.checkFoodAction()
 
         try {
-            // 目的地が設定されていなければ目的地を初期化
-            if (!this.targetLocation) {
+            if (!this._targetLocation) {
                 if (this.autoTarget) {
                     this.initTargetLocation(
                         new Vector2D(
                             Random.next(scene.width),
-                            Random.next(scene.height)));
+                            Random.next(scene.height)
+                        )
+                    )
                 }
 
-                return;
+                return
+            }
+
+            if (!(this.actor instanceof EmptyActor)) {
+                console.log(this._targetLocation)
             }
 
             // if (this.debug) {
-            //     scene.renderer.drawCircle(this.targetLocation!.x, this.targetLocation!.y, 20, new Color(255, 255, 0));
-            // }
+            // scene.renderer.drawCircle(this._targetLocation!.x, this._targetLocation!.y, 5, new Color(255, 255, 0))
+            // }   
 
-            let x = this.targetLocation.x - location.x;
-            let y = this.targetLocation.y - location.y;
+            let x = this._targetLocation.x - location.x
+            let y = this._targetLocation.y - location.y
+            const noise = () => Math.random() * 0.5 * this._actualSpeed * this.noiseSize
 
-            const noisev = () => Math.random() * 0.5 * this.speed * this.noizeSize;
+            const angleDiff = Math.atan2(y, x)
+            this.angle = Numerics.lerpAngle(this.angle, angleDiff, this.smoothCurveRate)
 
-            const angleDiff = Math.atan2(y, x);
-            this.angle = Numerics.lerpAngle(this.angle, angleDiff, this.smoothCurveRate);
+            const vector = Numerics.normalize(new Vector2D(x, y))
+            const vx = vector.x * this._actualSpeed + noise()
+            const vy = vector.y * this._actualSpeed + noise()
 
-            // 線形補間した角度をベクトル変換し足すことで、滑らかに大まわりに回転させる
-            if (Numerics.dist(this.targetLocation, location) > this.smoothCurveTriggerDistance) {
-                x = Math.cos(this.angle);
-                y = Math.sin(this.angle);
-            }
+            this.actor.translateFromVector(new Vector2D(vx * deltaTime, vy * deltaTime))
+            this.actor.setAngle(this.angle)
 
-            // 正規化してスピードとデルタタイムを合わせる
-            const vector = Numerics.normalize(new Vector2D(x, y));
-            const vx = vector.x * this.speed + noisev();
-            const vy = vector.y * this.speed + noisev();
-
-            this.actor.translateFromVector(new Vector2D(vx * deltaTime, vy * deltaTime));
-            this.actor.setAngle(this.angle);
-
-            // 次回のフレームで初期化させるため
-            if (Numerics.dist(this.actor.location, this.targetLocation) <= 20.0) {
+            // init in next frame
+            if (Numerics.dist(this.actor.location, this._targetLocation) <= 20.0) {
                 if (this.autoTarget && !this.isForceTracking) {
-                    this.targetLocation = null;
+                    this._targetLocation = null
                 }
             }
         }
         finally {
-            this.actor.update(deltaTime, scene);
+            this.actor.update(deltaTime, scene)
+        }
+    }
+
+    public translateTargetLocation(location: Vector2D, speed?: number) {
+        if (this.isForceTracking || this.food) {
+            return
+        }
+
+        if (speed) {
+            this._actualSpeed = speed
+        }
+
+        if (!this._targetLocation) {
+            this._targetLocation = ({
+                x: location.x,
+                y: location.y
+            })
+        }
+        else {
+            this._targetLocation = ({
+                x: this._targetLocation.x + location.x,
+                y: this._targetLocation.y + location.y
+            })
+        }
+    }
+
+    public shock(inputLocation: Vector2D) {
+        const location = this.actor.location
+        if (Numerics.dist(inputLocation, location) <= this.shockThreshouldDistance) {
+            this.endForceTrack?.()
+
+            const shockAvoidDistance = this.shockAvoidDistance
+
+            const vec = Numerics.normalize(
+                new Vector2D(
+                    inputLocation.x - location.x,
+                    inputLocation.y - location.y
+                )
+            )
+            const x = location.x - vec.x * shockAvoidDistance * Random.nextDouble()
+            const y = location.y - vec.y * shockAvoidDistance * Random.nextDouble()
+
+            const newTarget = new Vector2D(x, y)
+            const targetSpeed = this._actualSpeed * 5
+            const lastSpeed = this._actualSpeed
+            const dist = Numerics.dist(this.actor.location, newTarget) * 0.6
+
+            this._targetLocation = newTarget
+
+            this.endForceTrack = () => {
+                if (!this._targetLocation) {
+                    return
+                }
+
+                // when the target is reached
+                if (Numerics.dist(this.actor.location, this._targetLocation) <= 5) {
+                    this.endForceTrack = null
+                    this._targetLocation = new Vector2D(
+                        this._targetLocation.x + Random.nextDouble() * shockAvoidDistance,
+                        this._targetLocation.y + Random.nextDouble() * shockAvoidDistance
+                    )
+                    this._actualSpeed = lastSpeed
+                }
+                // when half of distance is reached
+                else if (Numerics.dist(this.actor.location, this._targetLocation) <= dist) {
+                    this._actualSpeed = Numerics.lerp(this._actualSpeed, lastSpeed, 0.24)
+                }
+                else {
+                    this._actualSpeed = Numerics.lerp(this._actualSpeed, targetSpeed, 0.08)
+                }
+            }
         }
     }
 
     private initTargetLocation(location: Vector2D) {
-        this.targetLocation = location;
-        this.speed = this.speedBias * (1.0 + Random.nextDouble() * 0.5);
-    }
-
-    translateTargetLocation(location: Vector2D, speed?: number) {
-        if (this.isForceTracking || this.food) {
-            return;
-        }
-
-        if (speed) {
-            this.speed = speed;
-        }
-
-        if (!this.targetLocation) {
-            this.targetLocation = ({
-                x: location.x,
-                y: location.y
-            });
-        }
-        else {
-            this.targetLocation = ({
-                x: this.targetLocation.x + location.x,
-                y: this.targetLocation.y + location.y
-            });
-        }
-    }
-
-    shock(inputlocation: Vector2D) {
-        const location = this.actor.location;
-
-        if (Numerics.dist(inputlocation, location) <= this.shockThreshouldDistance) {
-            this.endForceTrack && this.endForceTrack();
-
-            // 入力の座標とプリミティブの座標のベクトルの逆の地点を目的地へ設定
-            // 速度も上げる
-            const vec = Numerics.normalize(new Vector2D(
-                inputlocation.x - location.x,
-                inputlocation.y - location.y));
-            const x = location.x - vec.x * this.shockAvoidDistance;
-            const y = location.y - vec.y * this.shockAvoidDistance;
-
-            const lastSpeed = this.speed;
-            const target = this.targetLocation;
-
-            this.targetLocation = new Vector2D(x, y);
-            this.speed = this.speedBias * 5;
-            this.endForceTrack = () => {
-                if (!this.targetLocation) {
-                    return;
-                }
-
-                if (Numerics.dist(this.actor.location, this.targetLocation) <= 20.0) {
-                    this.speed = lastSpeed;
-                    this.targetLocation = target;
-                    this.endForceTrack = null;
-                }
-            };
-        }
+        this._targetLocation = location
+        this._actualSpeed = this.speedBias * (1.0 + Random.nextDouble() * 0.5)
     }
 
     private checkFoodAction() {
-        const getEanableFood = () => {
+        const getAvailableFood = () => {
             if (!this.foodProvider) {
-                return null;
+                return null
             }
 
-            const foods = this.foodProvider.foods;
+            const foods = this.foodProvider.foods
             if (foods.length > 0) {
                 // the nearest food
-                let food = foods[0].actor;
+                let food = foods[0].actor
                 for (let i = 1; i < foods.length; i++) {
                     if (
                         Numerics.dist(
@@ -200,54 +225,54 @@ export class TargetTrackingController<T extends Actor> extends Actor implements 
                             this.actor.location,
                             food.location)
                     ) {
-                        food = foods[i].actor;
+                        food = foods[i].actor
                     }
                 }
 
                 if (Numerics.dist(this.actor.location, food.location) <= this.foodTriggerDistance) {
-                    const angleDiff = Math.atan2(food.location.y - this.actor.location.y, food.location.x - this.actor.location.x);
-                    const a = Math.atan2(this.actor.vector.y, this.actor.vector.x);
+                    const angleDiff = Math.atan2(food.location.y - this.actor.location.y, food.location.x - this.actor.location.x)
+                    const a = Math.atan2(this.actor.vector.y, this.actor.vector.x)
                     if (Math.abs(a - angleDiff) < Numerics.toRadians(this.foodViewableAngleDeg * 0.5)) {
-                        return food;
+                        return food
                     }
                 }
             }
 
-            return null;
-        };
+            return null
+        }
 
-        const f = getEanableFood();
+        const f = getAvailableFood()
         if (f) {
             if (this.food || this.endForceTrack) {
-                return;
+                return
             }
 
-            const target = this.targetLocation;
-            const lastSpeed = this.speed;
+            const target = this._targetLocation
+            const lastSpeed = this._actualSpeed
 
-            this.targetLocation = f.location;
-            this.speed = this.speedBias * 1.8;
-            this.food = f;
+            this._targetLocation = f.location
+            this._actualSpeed = this.speedBias * 1.5
+            this.food = f
 
             this.endForceTrack = () => {
                 if (!this.foodProvider) {
-                    return;
+                    return
                 }
 
                 if (!this.food || Numerics.dist(this.actor.location, this.food.location) <= 10.0) {
-
                     if (this.food) {
-                        this.foodProvider.remove(this.food);
+                        this.foodProvider.remove(this.food)
                     }
-                    this.food = null;
-                    this.targetLocation = target;
-                    this.speed = lastSpeed;
-                    this.endForceTrack = null;
+
+                    this.food = null
+                    this._targetLocation = target
+                    this._actualSpeed = lastSpeed
+                    this.endForceTrack = null
                 }
-            };
+            }
         }
         else {
-            this.food = null;
+            this.food = null
         }
     }
 }

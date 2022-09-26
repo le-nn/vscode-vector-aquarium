@@ -4,10 +4,10 @@ import { MousePressedEvent } from "./core/MouseEvent";
 import { Scene } from "./core/Scene";
 import { Food } from "./Food";
 import { IController } from "./IController";
-import { SweyFallingController } from "./SwayFallingController";
+import { SwayFallingController } from "./SwayFallingController";
 
 export class FoodProvider extends Actor {
-    foods: SweyFallingController<DrawableActor>[] = [];
+    foods: SwayFallingController<DrawableActor>[] = [];
 
     setup(scene: Scene): void {
 
@@ -28,7 +28,7 @@ export class FoodProvider extends Actor {
 
     pressed(e: MousePressedEvent): void {
         this.foods.push(
-            new SweyFallingController(
+            new SwayFallingController(
                 new DrawableActor(new Food(), {
                     location: { x: e.position.x, y: 0 }
                 })

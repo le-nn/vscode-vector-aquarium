@@ -74,7 +74,7 @@ const initScene = (scene: Scene) => {
                         angle: i.angle ?? 0,
                     }
                 ),
-                6
+                0.02
             )
         );
     }
@@ -111,7 +111,7 @@ export const Main = () => {
     };
 
     const handleInitialized = (context: CanvasRenderingContext2D, width: number, height: number) => {
-        const scene=create(context, width, height);
+        const scene = create(context, width, height);
         setScene(scene);
         initScene(scene);
     };
