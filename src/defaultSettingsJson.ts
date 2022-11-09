@@ -1,4 +1,4 @@
-export const defaultSettings =`
+export const defaultSettings = `
 {
     "isFoodEnabled": true,
     "isRippleEnabled": true,
