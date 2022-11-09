@@ -3,7 +3,7 @@ import { Color } from "./libs/core/Color";
 import { Scene } from "./libs/core/Scene";
 import { Vector2D } from "./libs/core/Vector2D";
 import { FoodProvider } from "./libs/aquarium/FoodProvider";
-import { Renderer } from "./libs/HtmlCanvasRenderer";
+import { Renderer } from "./libs/utils/HtmlCanvasRenderer";
 import { RippleServer } from "./libs/aquarium/RippleServer";
 import { Canvas } from "./Canvas";
 import { setting as defaultSetting } from "./DefaultSetting";

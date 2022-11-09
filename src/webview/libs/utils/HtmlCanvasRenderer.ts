@@ -1,6 +1,6 @@
-import { IRenderer } from "./core/IRenderer";
-import { Color } from "./core/Color";
-import { Vector2D } from "./core/Vector2D";
+import { IRenderer } from "../core/IRenderer";
+import { Color } from "../core/Color";
+import { Vector2D } from "../core/Vector2D";
 
 export class Renderer implements IRenderer {
     private context: CanvasRenderingContext2D;
