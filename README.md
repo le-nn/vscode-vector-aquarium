@@ -15,6 +15,15 @@ https://marketplace.visualstudio.com/items?itemName=le-nn.vscode-vector-aquarium
 * When tapped, bait appears and fish will chase and eat it.
 * When fish tapped, fish will diffuse and escape.
 * Other creature will swim.
+* Grouped fish swim in swarm
+
+## How it works
+
+Swarm of fish is implemented with boid algorithm.
+https://en.wikipedia.org/wiki/Boids
+
+Draw and movement logic is here.
+https://github.com/le-nn/vscode-vector-aquarium/tree/main/src/webview/libs
 
 ## Usage
 
