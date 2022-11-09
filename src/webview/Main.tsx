@@ -61,23 +61,28 @@ const initScene = (scene: Scene) => {
     }
 
     for (const fishes of finalSetting.fish) {
-        const b = scene.instantiate(new Boid())
-        for (const fish of fishes) {
-            b.addBoid(
-                scene.instantiate(
-                    new Fish(
-                        Color.fromColorCode(fish.color ?? "#aaaaaa"),
-                        {
-                            location: new Vector2D(
-                                fish.location?.x ?? 0,
-                                fish.location?.y ?? 0
-                            ),
-                            scale: fish.scale ?? 1,
-                            angle: fish.angle ?? 0,
-                        }
+        if (Array.isArray(fishes)) {
+
+        }
+        else {
+            const b = scene.instantiate(new Boid())
+            for (const fish of fishes) {
+                b.addBoid(
+                    scene.instantiate(
+                        new Fish(
+                            Color.fromColorCode(fish.color ?? "#aaaaaa"),
+                            {
+                                location: new Vector2D(
+                                    fish.location?.x ?? 0,
+                                    fish.location?.y ?? 0
+                                ),
+                                scale: fish.scale ?? 1,
+                                angle: fish.angle ?? 0,
+                            }
+                        )
                     )
                 )
-            )
+            }
         }
     }
 }

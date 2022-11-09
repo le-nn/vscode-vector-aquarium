@@ -1,5 +1,3 @@
-import { type } from "os"
-
 export const setting: Setting = {
     isFoodEnabled: true,
     isRippleEnabled: true,
@@ -115,7 +113,7 @@ export const setting: Setting = {
 type Setting = {
     isFoodEnabled: boolean,
     isRippleEnabled: boolean,
-    fish: Actor[][],
+    fish: (Actor | Actor[])[],
     jerryfish: Actor[],
     lophophorata: Actor[]
 }
@@ -123,7 +121,7 @@ type Setting = {
 type Actor = {
     color?: string,
     location?: { x: number, y: number }
-    scale?:number,
-    angle?:number,
+    scale?: number,
+    angle?: number,
 }
 
