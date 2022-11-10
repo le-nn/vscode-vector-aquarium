@@ -4,6 +4,8 @@ Make your vscode an aquarium and heal you !
 
 <img src="image.gif" width="600px">
 
+<img src="assets/secondary.png" width="600px">
+
 ## Install
 
 Search ```vscode-vector-aquarium``` in your vscode extension tab or install from following url.
@@ -30,6 +32,14 @@ https://github.com/le-nn/vscode-vector-aquarium/tree/main/src/webview/libs
 Open extension tab.
 
 <img src="open.png" width="600px">
+
+### View on secondary side bar
+
+Enable secondary side bar from ```View > Appearance > Secondary Side Bar```.
+Drag from primary side bar and drop Fish icon to secondary side bar in order to make side bar enabled.
+
+![](./assets/appearance.png)
+![](./assets/secondary-zoom.png)
 
 ## Setting
 
