@@ -7,7 +7,7 @@ import { TargetTrackingController } from "./components/TargetTrackingController"
 import { FishShape } from "./shapes/Fish";
 
 export class Fish extends Actor {
-    public readonly targetTracker:TargetTrackingController
+    public readonly targetTracker: TargetTrackingController
 
     constructor(color: Color, transform?: Transform) {
         super()
@@ -23,7 +23,7 @@ export class Fish extends Actor {
             )
         ])
     }
-    
+
     public override pressed(e: MousePressedEvent): void {
         super.pressed(e)
         this.targetTracker.pressed(e)
