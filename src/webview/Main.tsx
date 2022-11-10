@@ -62,9 +62,6 @@ const initScene = (scene: Scene) => {
 
     for (const fishes of finalSetting.fish) {
         if (Array.isArray(fishes)) {
-
-        }
-        else {
             const b = scene.instantiate(new Boid())
             for (const fish of fishes) {
                 b.addBoid(
@@ -83,6 +80,21 @@ const initScene = (scene: Scene) => {
                     )
                 )
             }
+        }
+        else {
+            scene.instantiate(
+                new Fish(
+                    Color.fromColorCode(fishes.color ?? "#aaaaaa"),
+                    {
+                        location: new Vector2D(
+                            fishes.location?.x ?? 0,
+                            fishes.location?.y ?? 0
+                        ),
+                        scale: fishes.scale ?? 1,
+                        angle: fishes.angle ?? 0,
+                    }
+                )
+            )
         }
     }
 }
