@@ -1,6 +1,6 @@
 {
   "name": "vscode-vector-aquarium",
-  "displayName": "vscode-vector-aquarium",
+  "displayName": "Vector Aquarium",
   "description": "Make your vscode an aquarium and heal you !",
   "version": "0.0.2",
   "engines": {
