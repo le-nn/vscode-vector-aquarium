@@ -1,5 +1,7 @@
 # VSCode Vector Aquarium
 
+English / [日本語](./https://qiita.com/le-nn/items/244c638b5ecebc54868b)
+
 Make your vscode an aquarium and heal you !
 
 <img src="image.gif" width="600px">
