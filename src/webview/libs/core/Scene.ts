@@ -1,10 +1,10 @@
-import { Actor } from "./Actor";
-import { IRenderer } from "./IRenderer";
-import { animationFrame } from "../utils/animationFrame";
-import { MousePressedEvent } from "./MouseEvent";
-import { Vector2D } from "./Vector2D";
+import { Actor } from "./Actor"
+import { IRenderer } from "./IRenderer"
+import { animationFrame } from "../utils/animationFrame"
+import { MousePressedEvent } from "./MouseEvent"
+import { Vector2D } from "./Vector2D"
 
-type Subscription = ReturnType<typeof animationFrame>;
+type Subscription = ReturnType<typeof animationFrame>
 
 export class Scene {
     private _actors: Actor[] = []
@@ -53,8 +53,8 @@ export class Scene {
             a.setup(this)
         }
 
-        this.end();
-        this._subscription = animationFrame(this.tick.bind(this));
+        this.end()
+        this._subscription = animationFrame(this.tick.bind(this))
     }
 
     public end() {

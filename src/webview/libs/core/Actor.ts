@@ -1,8 +1,8 @@
-import { Vector2D } from "./Vector2D";
-import { Scene } from "./Scene";
-import { MousePressedEvent } from "./MouseEvent";
-import { Transform } from "./Transform";
-import { Component } from "./Component";
+import { Vector2D } from "./Vector2D"
+import { Scene } from "./Scene"
+import { MousePressedEvent } from "./MouseEvent"
+import { Transform } from "./Transform"
+import { Component } from "./Component"
 
 export abstract class Actor implements Transform {
     private _isDestroyed = false

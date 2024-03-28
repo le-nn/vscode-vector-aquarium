@@ -4,7 +4,7 @@
   "description": "Make your vscode an aquarium and heal you !",
   "version": "0.0.2",
   "engines": {
-    "vscode": "^1.69.0"
+    "vscode": "^1.75.0"
   },
   "icon": "assets/icon.png",
   "publisher": "le-nn",
@@ -13,10 +13,6 @@
   },
   "categories": [
     "Other"
-  ],
-  "activationEvents": [
-    "onCommand:vscode-vector-aquarium.config",
-    "onView:vscode-vector-aquarium.view"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -61,28 +57,28 @@
   },
   "devDependencies": {
     "@emotion/core": "^11.0.0",
-    "@emotion/react": "^11.10.0",
-    "@types/glob": "^7.2.0",
-    "@types/mocha": "^9.1.1",
-    "@types/node": "16.x",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
-    "@types/vscode": "^1.69.0",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
-    "@vitejs/plugin-react": "^2.0.0",
-    "@vscode/test-electron": "^2.1.5",
-    "eslint": "^8.20.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.0.0",
+    "@emotion/react": "^11.11.4",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "20.11.30",
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.23",
+    "@types/vscode": "^1.87.0",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vscode/test-electron": "^2.3.9",
+    "eslint": "^8.57.0",
+    "glob": "^10.3.12",
+    "mocha": "^10.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^4.7.4",
-    "use-resize-observer": "^9.0.2",
-    "vite": "^3.0.4"
+    "typescript": "^5.4.3",
+    "use-resize-observer": "^9.1.0",
+    "vite": "^5.2.6"
   },
   "dependencies": {
     "global": "^4.4.0",
-    "vsce": "^2.13.0"
+    "vsce": "^2.15.0"
   }
 }

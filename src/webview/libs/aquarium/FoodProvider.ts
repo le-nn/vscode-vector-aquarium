@@ -1,13 +1,13 @@
-import { Actor } from "../core/Actor";
-import { DrawableActor } from "../core/DrawableActor";
-import { MousePressedEvent } from "../core/MouseEvent";
-import { Scene } from "../core/Scene";
-import { Vector2D } from "../core/Vector2D";
-import { SwayFallingController } from "./components/SwayFallingController";
-import { Food } from "./Food";
+import { Actor } from "../core/Actor"
+import { DrawableActor } from "../core/DrawableActor"
+import { MousePressedEvent } from "../core/MouseEvent"
+import { Scene } from "../core/Scene"
+import { Vector2D } from "../core/Vector2D"
+import { SwayFallingController } from "./components/SwayFallingController"
+import { Food } from "./Food"
 
 export class FoodProvider extends Actor {
-    foods: Food[] = [];
+    foods: Food[] = []
 
     public setup(scene: Scene): void {
         super.setup(scene)
@@ -24,12 +24,12 @@ export class FoodProvider extends Actor {
     }
 
     public remove(food: Food) {
-        this.foods = this.foods.filter(x => x !== food);
-        food.destroy();
+        this.foods = this.foods.filter(x => x !== food)
+        food.destroy()
     }
 
     public pressed(e: MousePressedEvent): void {
         const food = this.instantiate(new Food(), new Vector2D(e.position.x, 0))
-        this.foods.push(food);
+        this.foods.push(food)
     }
 }

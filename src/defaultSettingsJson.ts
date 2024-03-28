@@ -627,4 +627,4 @@ export const defaultSettings = `
         }
     ]
 }
-`;
+`

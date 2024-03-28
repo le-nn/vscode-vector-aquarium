@@ -99,7 +99,7 @@ export class TargetTrackingController extends Component {
 
     public shock(inputLocation: Vector2D) {
         if (!this.isShockEnabled) {
-            return;
+            return
         }
 
         const location = this.actor.location
@@ -199,7 +199,7 @@ export class TargetTrackingController extends Component {
 
     private checkFoodAction() {
         if (!this.isFoodEnabled) {
-            return;
+            return
         }
 
         const getAvailableFood = () => {

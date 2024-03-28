@@ -1,5 +1,5 @@
-import { Component } from "./Component";
-import { Shape } from "./Shape";
+import { Component } from "./Component"
+import { Shape } from "./Shape"
 
 export class DrawableShapeComponent extends Component {
     private _shape: Shape
