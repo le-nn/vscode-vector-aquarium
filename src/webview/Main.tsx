@@ -6,15 +6,16 @@ import { FoodProvider } from "./libs/aquarium/FoodProvider";
 import { Renderer } from "./libs/utils/HtmlCanvasRenderer";
 import { RippleServer } from "./libs/aquarium/RippleServer";
 import { Canvas } from "./Canvas";
-import { setting as defaultSetting } from "./DefaultSetting";
+import { ActorOrBoid, setting as defaultSetting, } from "./DefaultSetting";
 import { Lophophorata } from "./libs/aquarium/Lophophorata";
 import { Jellyfish } from "./libs/aquarium/Jellyfish";
 import { Boid } from "./libs/aquarium/Boid";
 import { Fish } from "./libs/aquarium/Fish";
 import { MousePressedEvent } from "./libs/core/MouseEvent";
+import { Random } from "./libs/core/Random";
 
 // Merge settings
-const finalSetting = {
+const finalSetting: typeof defaultSetting = {
     ...defaultSetting,
     ...((window as any)?.setting ?? {})
 }
@@ -27,14 +28,109 @@ const create = (context: CanvasRenderingContext2D, width: number, height: number
 
 const initScene = (scene: Scene) => {
     if (finalSetting.isFoodEnabled) {
-        scene.instantiate(new FoodProvider())
+        scene.instantiate(new FoodProvider(finalSetting.foodColors))
     }
 
     if (finalSetting.isRippleEnabled) {
-        scene.instantiate(new RippleServer())
+        scene.instantiate(new RippleServer(finalSetting.rippleColors))
     }
 
-    for (const i of finalSetting.lophophorata) {
+
+    for (const actor of finalSetting.actors ?? []) {
+        if (actor.type === "boid") {
+            const b = scene.instantiate(new Boid())
+
+            b.boss.speed = Number(actor.speed ?? 1)
+
+            // Add child actors
+            for (const child of actor.children ?? []) {
+                const childInstance = createActor(child)
+                if (childInstance) {
+                    b.addBoid(scene.instantiate(childInstance))
+                }
+            }
+
+            // Auto add
+            for (let i = 0; i < (actor.autoAddCount ?? 0); i++) {
+                if (actor.autoAddTemplate) {
+                    const template = createActor(actor.autoAddTemplate)
+                    if (template) {
+                        b.addBoid(scene.instantiate(template));
+                    }
+                }
+            }
+
+        }
+        else {
+            const actorInstance = createActor(actor, scene)
+            if (actorInstance) {
+                scene.instantiate(actorInstance)
+            }
+        }
+    }
+
+    initDeprecateds(scene);
+}
+
+const createActor = (actor?: ActorOrBoid, scene?: Scene) => {
+    const centerX = Random.next(scene?.width ?? 0)
+    const centerY = Random.next(scene?.height ?? 0)
+
+    if (!actor) {
+        return null
+    }
+
+    switch (actor.type) {
+        case "boid":
+            return null
+        case "lophophorata":
+            return new Lophophorata(
+                Color.fromColorCode(actor.color ?? "#aaaaaa"),
+                {
+                    location: new Vector2D(actor.location?.x ?? centerX, actor.location?.y ?? centerY),
+                    scale: actor.scale ?? 1,
+                    angle: actor.angle ?? Random.next(0, 360),
+                }
+            )
+        case "fish":
+            return new Fish(
+                Color.fromColorCode(actor.color ?? "#aaaaaa"),
+                {
+                    location: new Vector2D(actor.location?.x ?? centerX, actor.location?.y ?? centerY),
+                    scale: actor.scale ?? 1,
+                    angle: actor.angle ?? Random.next(0, 360),
+                }
+            )
+        case "jerryfish":
+            return new Jellyfish(
+                Color.fromColorCode(actor.color ?? "#aaaaaa"),
+                {
+                    location: new Vector2D(actor.location?.x ?? centerX, actor.location?.y ?? centerY),
+                    scale: actor.scale ?? 1,
+                    angle: actor.angle ?? Random.next(0, 360),
+                }
+            )
+        default: {
+            return new Fish(
+                Color.fromColorCode(actor.color ?? "#aaaaaa"),
+                {
+                    location: new Vector2D(actor.location?.x ?? centerX, actor.location?.y ?? centerY),
+                    scale: actor.scale ?? 1,
+                    angle: actor.angle ?? Random.next(0, 360),
+                }
+            )
+        }
+    }
+}
+
+/**
+ * Init deprecated json params
+ * @deprecated
+ * @param scene Scene
+ */
+const initDeprecateds = (scene: Scene) => {
+
+    for (const i of finalSetting.lophophorata ?? []) {
         scene.instantiate(
             new Lophophorata(
                 Color.fromColorCode(i.color ?? "#aaaaaa"),
@@ -47,7 +143,7 @@ const initScene = (scene: Scene) => {
         )
     }
 
-    for (const i of finalSetting.jerryfish) {
+    for (const i of finalSetting.jerryfish ?? []) {
         scene.instantiate(
             new Jellyfish(
                 Color.fromColorCode(i.color ?? "#aaaaaa"),
@@ -60,7 +156,7 @@ const initScene = (scene: Scene) => {
         )
     }
 
-    for (const fishes of finalSetting.fish) {
+    for (const fishes of finalSetting.fish ?? []) {
         if (Array.isArray(fishes)) {
             const b = scene.instantiate(new Boid())
             for (const fish of fishes) {
@@ -125,13 +221,12 @@ export const Main = () => {
                 width: "100%"
             }}
         >
-            {error ?
-                <div style={{ padding: "20px" }}>
+            {error
+                ? <div style={{ padding: "20px" }}>
                     Oops...! something went wrong<br />
                     Message: {error}
                 </div>
-                :
-                <Canvas width={"100%"} height={"100%"}
+                : <Canvas width={"100%"} height={"100%"}
                     pointerDownHandler={handlePointerDown}
                     resized={s => {
                         if (scene) {

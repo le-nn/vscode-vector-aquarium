@@ -28,7 +28,7 @@ export const Canvas = (props: CanvasProps) => {
     const isInitialized = useRef(false);
 
     useEffect(() => {
-        if (!width) {
+        if (!width || !height) {
             return;
         }
 

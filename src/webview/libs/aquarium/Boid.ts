@@ -14,11 +14,17 @@ export class Boid extends Actor {
 
     public avoidThresholdDist = 30
 
+    private _boss: TargetTrackingController;
+
+    public get boss() {
+        return this._boss
+    }
+
     constructor() {
         super()
-
+        this._boss = new TargetTrackingController()
         this.addComponents([
-            new TargetTrackingController()
+            this._boss
         ])
     }
 

@@ -5,19 +5,19 @@ import { Random } from "../core/Random"
 import { Scene } from "../core/Scene"
 import { Vector2D } from "../core/Vector2D"
 import { IRenderer } from "../core/IRenderer"
-import { MarbleCircle } from "./shapes/MarbleCircle"
+import { MarbleCircle, MarbleCircleShapeOption } from "./shapes/MarbleCircle"
 import { Shape } from "../core/Shape"
 import { DrawableShapeComponent } from "../core/DrawableShapeComponent"
 
 export class Ripple extends Actor {
     readonly shape: MarbleCircle
 
-    constructor() {
+    constructor(options?: MarbleCircleShapeOption) {
         super()
 
         this.addComponents([
             new DrawableShapeComponent(
-                this.shape = new MarbleCircle()
+                this.shape = new MarbleCircle(options)
             ),
         ])
     }
@@ -49,7 +49,15 @@ export class Ripple extends Actor {
 export class RippleServer extends Actor {
     ripples: Ripple[] = []
 
-    setup(scene: Scene): void {
+    readonly _rippleColors: string[] | null
+
+    constructor(rippleColors?: string[]) {
+        super()
+
+        this._rippleColors = rippleColors ?? null
+    }
+
+    setup(scene: Scene,): void {
         super.setup(scene)
     }
 
@@ -65,6 +73,9 @@ export class RippleServer extends Actor {
     }
 
     pressed(e: MousePressedEvent): void {
-        this.ripples.push(this.instantiate(new Ripple(), e.position))
+        const color =  (this._rippleColors?.length ?? 0) > 0 ? Color.fromColorCode(Random.randomItem(this._rippleColors ?? [])) : undefined
+        this.ripples.push(this.instantiate(new Ripple({
+            color,
+        }), e.position))
     }
 }

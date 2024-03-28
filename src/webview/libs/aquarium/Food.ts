@@ -1,19 +1,22 @@
+
 import { Actor } from "../core/Actor"
+import { Color } from "../core/Color"
 import { DrawableShapeComponent } from "../core/DrawableShapeComponent"
-import { MousePressedEvent } from "../core/MouseEvent"
 import { SwayFallingController } from "./components/SwayFallingController"
-import { FoodShape } from "./shapes/Food"
+import { MarbleCircle } from "./shapes/MarbleCircle"
 
 export class Food extends Actor {
     public readonly sway = new SwayFallingController()
 
-    constructor() {
+    constructor(color?: Color) {
         super()
-
         this.addComponents([
             this.sway,
             new DrawableShapeComponent(
-                new FoodShape()
+                new MarbleCircle({
+                    color,
+                    size: 3
+                })
             )
         ])
     }

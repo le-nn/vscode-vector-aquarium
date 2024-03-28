@@ -31,13 +31,18 @@ export class Scene {
         this._actors.push(actor)
     }
 
-    public instantiate<TActor extends Actor>(actor: TActor, location?: Vector2D, angle: number = 0, scale: number = 1) {
+    public instantiate<TActor extends Actor>(actor: TActor, location?: Vector2D, angle?: number = 0, scale?: number) {
         if (location) {
             actor.setLocation(location)
         }
+        
+        if (angle) {
+            actor.setAngle(angle)
+        }
 
-        actor.setAngle(angle)
-        actor.setScale(scale)
+        if (scale) {
+            actor.setScale(scale)
+        }
 
         this.append(actor)
 

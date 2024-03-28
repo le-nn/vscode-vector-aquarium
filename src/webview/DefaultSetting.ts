@@ -1,127 +1,101 @@
 export const setting: Setting = {
     isFoodEnabled: true,
     isRippleEnabled: true,
-    fish: [
-        [
-            { color: "#3f51b5", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#3f51b5", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#3f51b5", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#3f51b5", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#3f51b5", scale: 1, location: { x: 0, y: 0 } },
-        ],
-        [
-            { color: "#2196f3", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#2196f3", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#2196f3", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#2196f3", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#2196f3", scale: 1, location: { x: 0, y: 0 } },
-        ],
-        [
-            { color: "#00bcd4", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#00bcd4", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#00bcd4", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#00bcd4", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#00bcd4", scale: 1, location: { x: 0, y: 0 } },
-        ],
-        [
-            { color: "#009688", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#009688", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#009688", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#009688", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#009688", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#009688", scale: 1, location: { x: 0, y: 0 } },
-        ],
-
-        [
-            { color: "#4caf50", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#4caf50", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#4caf50", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#4caf50", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#4caf50", scale: 1, location: { x: 0, y: 0 } },
-        ],
-        [
-            { color: "#cddc39", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#cddc39", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#cddc39", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#cddc39", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#cddc39", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#cddc39", scale: 1, location: { x: 0, y: 0 } },
-        ],
-        [
-            { color: "#ffeb3b", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#ffeb3b", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#ffeb3b", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#ffeb3b", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#ffeb3b", scale: 1, location: { x: 0, y: 0 } },
-        ],
-        [
-            { color: "#ffc107", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#ffc107", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#ffc107", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#ffc107", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#ffc107", scale: 1, location: { x: 0, y: 0 } },
-        ],
-        [
-            { color: "#ff9800", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#ff9800", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#ff9800", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#ff9800", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#ff9800", scale: 1, location: { x: 0, y: 0 } },
-        ],
-        [
-            { color: "#ff5722", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#ff5722", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#ff5722", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#ff5722", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#ff5722", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#ff5722", scale: 1, location: { x: 0, y: 0 } },
-        ],
-        [
-            { color: "#f44336", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#f44336", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#f44336", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#f44336", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#f44336", scale: 1, location: { x: 0, y: 0 } },
-        ],
-        [
-            { color: "#e91e63", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#e91e63", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#e91e63", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#e91e63", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#e91e63", scale: 1, location: { x: 0, y: 0 } },
-        ],
-        [
-            { color: "#9c27b0", scale: 1, location: { x: 0, y: 0 } },
-            { color: "#9c27b0", scale: 0.8, location: { x: 0, y: 0 } },
-            { color: "#9c27b0", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#9c27b0", scale: 0.9, location: { x: 0, y: 0 } },
-            { color: "#9c27b0", scale: 1, location: { x: 0, y: 0 } },
-        ],
+    rippleColors:[
+        "#3f51b5",
+        "#2196f3",
+        "#00bcd4",
+        "#009688",
+        "#4caf50",
+        "#cddc39",
+        "#ffeb3b",
+        "#ffc107",
+        "#ff9800",
+        "#ff5722",
+        "#f44336",
+        "#e91e63",
+        "#9c27b0"
     ],
-    jerryfish: [
-        { color: "#9c27b0", scale: 1, location: { x: 340, y: 120 } },
-        { color: "#e91e63", scale: 0.88, location: { x: 120, y: 230 } },
-        { color: "#00bcd4", scale: 0.79, location: { x: 160, y: 330 } },
-        { color: "#cddc39", scale: 0.9, location: { x: 80, y: 220 } },
-        { color: "#ff5722", scale: 1.2, location: { x: 96, y: 150 } },
+    foodColors:[
+        "#3f51b5",
+        "#2196f3",
+        "#00bcd4",
+        "#009688",
+        "#4caf50",
+        "#cddc39",
+        "#ffeb3b",
+        "#ffc107",
+        "#ff9800",
+        "#ff5722",
+        "#f44336",
+        "#e91e63",
+        "#9c27b0"
     ],
-    lophophorata: [
-        { color: "#3f51b5", scale: 1, location: { x: 120, y: 200 } },
-    ]
+    actors: [
+        { type: "boid", autoAddTemplate: { type: "fish","color": "#3f51b5" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#2196f3" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#00bcd4" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#009688" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#4caf50" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#cddc39" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#ffeb3b" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#ffc107" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#ff9800" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#ff5722" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#ff5722" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#f44336" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#e91e63" }, autoAddCount: 5, },
+        { type: "boid", autoAddTemplate: { "color": "#9c27b0" }, autoAddCount: 5, },
+        { type: "fish", color: "#00bcd4", scale: 1.4 },
+        { type: "jerryfish", color: "#9c27b0", scale: 1, },
+        { type: "jerryfish", color: "#e91e63", scale: 0.88, },
+        { type: "jerryfish", color: "#00bcd4", scale: 0.79, },
+        { type: "jerryfish", color: "#cddc39", scale: 0.9, },
+        { type: "jerryfish", color: "#ff5722", scale: 1.2, },
+        { type: "lophophorata", color: "#3f51b5", scale: 1, location: { x: 120, y: 200 } },
+    ],
 }
 
 type Setting = {
-    isFoodEnabled: boolean,
-    isRippleEnabled: boolean,
-    fish: (Actor | Actor[])[],
-    jerryfish: Actor[],
-    lophophorata: Actor[]
+    isFoodEnabled: boolean
+    isRippleEnabled: boolean
+    rippleColors?: string[]
+
+    foodColors?: string[]
+
+    actors?: ActorOrBoid[]
+
+    /**
+     * @deprecated
+     */
+    fish?: (Actor | Actor[])[]
+
+    /**
+     * @deprecated
+     */
+    jerryfish?: Actor[]
+
+    /**
+     * @deprecated
+     */
+    lophophorata?: Actor[]
 }
 
 type Actor = {
-    color?: string,
+    type?: "lophophorata" | "jerryfish" | "fish"
+    color?: string
     location?: { x: number, y: number }
-    scale?: number,
-    angle?: number,
+    scale?: number
+    angle?: number
+}
+
+export type ActorOrBoid = Boid | Actor
+
+type Boid = {
+    type: "boid"
+    speed?: number
+    children?: Actor[]
+    autoAddTemplate?: Actor
+    autoAddCount?: number
 }
 

@@ -1,13 +1,21 @@
 import { Actor } from "../core/Actor"
-import { DrawableActor } from "../core/DrawableActor"
+import { Color } from "../core/Color"
 import { MousePressedEvent } from "../core/MouseEvent"
+import { Random } from "../core/Random"
 import { Scene } from "../core/Scene"
 import { Vector2D } from "../core/Vector2D"
-import { SwayFallingController } from "./components/SwayFallingController"
 import { Food } from "./Food"
 
 export class FoodProvider extends Actor {
     foods: Food[] = []
+    readonly _foodColors: string[] | null
+
+    constructor(foodColors?: string[]) {
+        super()
+
+        this._foodColors = foodColors ?? null
+    }
+
 
     public setup(scene: Scene): void {
         super.setup(scene)
@@ -29,7 +37,8 @@ export class FoodProvider extends Actor {
     }
 
     public pressed(e: MousePressedEvent): void {
-        const food = this.instantiate(new Food(), new Vector2D(e.position.x, 0))
+        const color =  (this._foodColors?.length ?? 0) > 0 ? Color.fromColorCode(Random.randomItem(this._foodColors ?? [])) : undefined
+        const food = this.instantiate(new Food(color), new Vector2D(e.position.x, 0))
         this.foods.push(food)
     }
 }

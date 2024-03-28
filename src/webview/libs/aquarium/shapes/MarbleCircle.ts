@@ -5,11 +5,12 @@ import { Vector2D } from "../../core/Vector2D"
 import { IRenderer } from "../../core/IRenderer"
 import { Shape } from "../../core/Shape"
 
-interface MarbleCircleShapeOption {
-    color?: Color;
-    opacity?: number;
-    layersOverride?: Color[];
-    layerNum?: number;
+export interface MarbleCircleShapeOption {
+    color?: Color
+    opacity?: number
+    layersOverride?: Color[]
+    layerNum?: number
+    size?: number
 }
 
 export class MarbleCircle extends Shape {
@@ -18,6 +19,7 @@ export class MarbleCircle extends Shape {
     layers!: Color[]
     color?: Color
     layerNum = 6
+    layersOverride?: Color[]
 
     constructor(option?: MarbleCircleShapeOption) {
         super()
@@ -28,7 +30,7 @@ export class MarbleCircle extends Shape {
 
         if (!this.layers) {
             const c = this.color ?? Random.getRandomColor()
-            this.layers = [...new Array(this.layerNum)]
+            this.layers = this.layersOverride ?? [...new Array(this.layerNum)]
                 .map(_ => c)
                 .map(c => {
                     const hsv = c.toHsv()
