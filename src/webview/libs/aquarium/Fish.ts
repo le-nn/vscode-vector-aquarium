@@ -9,7 +9,7 @@ import { FishShape } from "./shapes/Fish"
 export class Fish extends Actor {
     public readonly targetTracker: TargetTrackingController
 
-    constructor(color: Color, transform?: Transform) {
+    constructor(color: Color, speed?: number | null, transform?: Transform) {
         super()
 
         this.scale = transform?.scale ?? this.scale
@@ -17,11 +17,11 @@ export class Fish extends Actor {
         this.angle = transform?.angle ?? this.angle
 
         this.addComponents([
-            this.targetTracker = new TargetTrackingController(),
-            new DrawableShapeComponent(
-                new FishShape(color)
-            )
+            this.targetTracker = new TargetTrackingController(speed ?? 1),
+            new DrawableShapeComponent(new FishShape(color)),
         ])
+
+        this.targetTracker.setTargetLocation(this.location)
     }
 
     public override pressed(e: MousePressedEvent): void {

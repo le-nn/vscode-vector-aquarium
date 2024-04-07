@@ -4,12 +4,10 @@ import { Numerics } from "../../core/Numerics"
 import { Scene } from "../../core/Scene"
 import { Actor } from "../../core/Actor"
 import { MousePressedEvent } from "../../core/MouseEvent"
-import { DrawableActor } from "../../core/DrawableActor"
-import { Color } from "../../core/Color"
-import { EmptyActor } from "../../core/EmptyActor"
 import { Component } from "../../core/Component"
 import { Food } from "../Food"
 import { FoodProvider } from "../FoodProvider"
+import { Color } from "../../core/Color"
 
 export class TargetTrackingController extends Component {
     private _actualSpeed = 0
@@ -48,9 +46,11 @@ export class TargetTrackingController extends Component {
         return !!this._hook
     }
 
-    constructor(speed: number = 1) {
+    constructor(speed: number = 1, foodEnabled: boolean = true, shockEnabled: boolean = true) {
         super()
         this.speed = speed
+        this.isFoodEnabled = foodEnabled
+        this.isShockEnabled = shockEnabled
     }
 
     public setup(scene: Scene, actor: Actor): void {
@@ -70,6 +70,10 @@ export class TargetTrackingController extends Component {
         super.update(deltaTime)
         this.updateLocation(deltaTime)
         this._lastDeltaTime = deltaTime
+    }
+
+    public setTargetLocation(location: Vector2D) {
+        this._targetLocation = location
     }
 
     public translateTargetLocation(location: Vector2D, speed?: number) {

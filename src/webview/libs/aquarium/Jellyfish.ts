@@ -8,7 +8,7 @@ import { JellyfishShape } from "./shapes/JellyFish"
 export class Jellyfish extends Actor {
     public readonly targetTracker: TargetTrackingController
 
-    constructor(color: Color, transform?: Transform) {
+    constructor(color: Color, speed?: number | null, transform?: Transform | null) {
         super()
 
         this.scale = transform?.scale ?? this.scale
@@ -16,7 +16,7 @@ export class Jellyfish extends Actor {
         this.angle = transform?.angle ?? this.angle
 
         this.addComponents([
-            this.targetTracker = new TargetTrackingController(0.02),
+            this.targetTracker = new TargetTrackingController((speed ?? 1) * 0.05),
             new DrawableShapeComponent(
                 new JellyfishShape(color)
             )

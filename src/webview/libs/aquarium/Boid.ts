@@ -4,11 +4,13 @@ import { Scene } from "../core/Scene"
 import { TargetTrackingController } from "./components/TargetTrackingController"
 import { Actor } from "../core/Actor"
 import { Color } from "../core/Color"
+import { DrawableShapeComponent } from "../core/DrawableShapeComponent"
+import { MarbleCircle } from "./shapes/MarbleCircle"
 
 export class Boid extends Actor {
-    private readonly r1 = 8 // 群れの中心に向かう度合
-    private readonly r2 = 16 // 仲間を避ける度合
-    private readonly r3 = 2 // 群れの平均速度に合わせる度合
+    private readonly rule1 = 8 // 群れの中心に向かう度合
+    private readonly rule2 = 16 // 仲間を避ける度合
+    private readonly rule3 = 2 // 群れの平均速度に合わせる度合
 
     public readonly children: TargetTrackingController[] = []
 
@@ -20,15 +22,20 @@ export class Boid extends Actor {
         return this._boss
     }
 
-    constructor() {
+    constructor(location?: Vector2D) {
         super()
-        this._boss = new TargetTrackingController()
+
+        if (location) {
+            this.location = location
+        }
+
+        this._boss = new TargetTrackingController(100, false)
         this.addComponents([
             this._boss
         ])
     }
 
-    setup(scene: Scene): void {
+    public setup(scene: Scene): void {
         super.setup(scene)
     }
 
@@ -63,28 +70,31 @@ export class Boid extends Actor {
         }
     }
 
-    getMovementVector(actor: Actor): Vector2D {
+    public getMovementVector(actor: Actor): Vector2D {
         let vx = 0
         let vy = 0
 
         let result = this.getVectorToCenter(actor)
-        vx += result.x * this.r1
-        vy += result.y * this.r1
+        vx += result.x * this.rule1
+        vy += result.y * this.rule1
 
         result = this.getVectorToAvoid(actor)
-        vx += result.x * this.r2
-        vy += result.y * this.r2
+        vx += result.x * this.rule2
+        vy += result.y * this.rule2
 
         result = this.getVectorToAverage(actor)
-        vx += result.x * this.r3
-        vy += result.y * this.r3
+        vx += result.x * this.rule3
+        vy += result.y * this.rule3
 
         vx /= 3
         vy /= 3
 
-        return {
-            x: vx,
-            y: vy
+        return new Vector2D(vx, vy)
+    }
+
+    public shock(location: Vector2D) {
+        for (const item of this.children) {
+            item.shock(location)
         }
     }
 
@@ -161,11 +171,5 @@ export class Boid extends Actor {
         vy /= count
 
         return Numerics.normalize(new Vector2D(vx, vy))
-    }
-
-    shock(location: Vector2D) {
-        for (const item of this.children) {
-            item.shock(location)
-        }
     }
 }
