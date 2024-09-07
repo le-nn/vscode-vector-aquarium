@@ -26,7 +26,6 @@ export const defaultSettings: AquariumSetting = {
         { type: "boid", autoAddTemplate: { type: "fish", "color": "#f44336" }, autoAddCount: 5, },
         { type: "boid", autoAddTemplate: { type: "fish", "color": "#e91e63" }, autoAddCount: 5, },
         { type: "boid", autoAddTemplate: { type: "fish", "color": "#9c27b0" }, autoAddCount: 5, },
-        { type: "fish", color: "#00bcd4", scale: 1.2 },
         { type: "jerryfish", color: "#9c27b0", scale: 1, },
         { type: "jerryfish", color: "#e91e63", scale: 0.88, },
         { type: "jerryfish", color: "#00bcd4", scale: 0.79, speed: 10 },
