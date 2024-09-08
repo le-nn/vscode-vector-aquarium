@@ -1,11 +1,7 @@
-import { Actor } from "../../core/Actor"
 import { Color } from "../../core/Color"
-import { DrawableActor } from "../../core/DrawableActor"
-import { MousePressedEvent } from "../../core/MouseEvent"
 import { Numerics } from "../../core/Numerics"
 import { Random } from "../../core/Random"
 import { Scene } from "../../core/Scene"
-import { Vector2D } from "../../core/Vector2D"
 import { MarbleCircle } from "./MarbleCircle"
 import { Shape } from "../../core/Shape"
 

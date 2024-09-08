@@ -2,9 +2,9 @@
   "name": "vscode-vector-aquarium",
   "displayName": "Vector Aquarium",
   "description": "Make your vscode an aquarium and heal you !",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.93.0"
   },
   "icon": "assets/icon.png",
   "publisher": "le-nn",
@@ -56,8 +56,6 @@
     "build:view": "vite build -c ./vite.config.ts"
   },
   "devDependencies": {
-    "@emotion/core": "^11.0.0",
-    "@emotion/react": "^11.11.4",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "20.11.30",
@@ -74,11 +72,11 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.4.3",
-    "use-resize-observer": "^9.1.0",
     "vite": "^5.2.6"
   },
   "dependencies": {
     "global": "^4.4.0",
-    "vsce": "^2.15.0"
+    "vsce": "^2.15.0",
+    "vector-aquarium": "./lib/js/vector-aquarium"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "name": "vector-aquarium",
+  "version": "1.0.0",
+  "description": "Make your html canvas an aquarium and heal you!",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && vite build"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "vite": "^5.4.3",
+    "vite-plugin-dts": "^4.1.1"
+  },
+  "dependencies": {
+    "use-resize-observer": "^9.1.0"
+  }
+}

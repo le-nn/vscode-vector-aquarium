@@ -31,16 +31,16 @@ export class Scene {
         this._actors.push(actor)
     }
 
-    public instantiate<TActor extends Actor>(actor: TActor, location?: Vector2D, angle?: number = 0, scale?: number) {
+    public instantiate<TActor extends Actor>(actor: TActor, location?: Vector2D, angle: number | undefined = 0, scale?: number) {
         if (location) {
             actor.setLocation(location)
         }
-        
-        if (angle) {
+
+        if (angle !== undefined) {
             actor.setAngle(angle)
         }
 
-        if (scale) {
+        if (scale !== undefined) {
             actor.setScale(scale)
         }
 

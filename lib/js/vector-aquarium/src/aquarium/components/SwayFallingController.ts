@@ -2,7 +2,6 @@ import { Actor } from "../../core/Actor"
 import { Component } from "../../core/Component"
 import { MousePressedEvent } from "../../core/MouseEvent"
 import { Scene } from "../../core/Scene"
-import { Shape } from "../../core/Shape"
 
 export class SwayFallingController extends Component {
     private waveOffset = 0

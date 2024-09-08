@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vector Aquarium</title>
+  </head>
+  <body>
+    <div id="canvas"></div>
+    <script type="module" src="path to lib umd"></script>
+
+    <script>
+      setTimeout(() => {
+          const canvasElement = document.querySelector('#canvas')
+          const renderer = new VectorAquarium.HtmlCanvasRenderer(canvasElement.getContext("2d"))
+          const sceneContext = new VectorAquarium.Scene(canvasElement.clientHeight, canvasElement.clientWidth, renderer) 
+          sceneContext.begin()
+          VectorAquarium.createAquarium(s, VectorAquarium.defaultSettings);
+      }, 1000)
+  </script>
+  </body>
+</html>

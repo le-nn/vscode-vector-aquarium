@@ -3,9 +3,6 @@ import { Numerics } from "../core/Numerics"
 import { Scene } from "../core/Scene"
 import { TargetTrackingController } from "./components/TargetTrackingController"
 import { Actor } from "../core/Actor"
-import { Color } from "../core/Color"
-import { DrawableShapeComponent } from "../core/DrawableShapeComponent"
-import { MarbleCircle } from "./shapes/MarbleCircle"
 
 export class Boid extends Actor {
     private readonly rule1 = 8 // 群れの中心に向かう度合

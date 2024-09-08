@@ -1,15 +1,20 @@
 import * as React from "react";
-import { Scene } from "vector-aquarium";
-import { HtmlCanvasRenderer } from "vector-aquarium";
+
+import {
+    Scene,
+    HtmlCanvasRenderer,
+    defaultSettings,
+    MousePressedEvent,
+    AquariumSetting,
+    createAquarium
+} from "vector-aquarium";
+
 import { Canvas } from "vector-aquarium/react";
-import { defaultSettings, } from "vector-aquarium";
-import { MousePressedEvent } from "vector-aquarium";
-import {  AquariumSetting } from "vector-aquarium";
-import { createAquarium } from "vector-aquarium";
 
 // Merge settings
 const finalSetting: AquariumSetting = {
     ...defaultSettings,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ...((window as any)?.setting ?? {})
 }
 
@@ -19,7 +24,7 @@ const create = (context: CanvasRenderingContext2D, width: number, height: number
     return scene
 }
 
-export const Main = () => {
+export const App = () => {
     const [scene, setScene] = React.useState<Scene | null>(null);
     const [error, setError] = React.useState<string | null>(null);
 
@@ -33,6 +38,7 @@ export const Main = () => {
             setScene(scene);
             createAquarium(scene, finalSetting);
         }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         catch (ex: any) {
             setError(ex.message ?? "An error occurred");
         }

@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as React from "react";
-import useResizeObserver from "use-resize-observer";
-import { MousePressedEvent } from "./libs/core/MouseEvent";
-import { Vector2D } from "./libs/core/Vector2D";
+import useResizeObserver  from "use-resize-observer";
+import { MousePressedEvent } from "../src/core/MouseEvent";
+import { Vector2D } from "../src/core/Vector2D";
 
 type Size = { width: number, height: number };
 

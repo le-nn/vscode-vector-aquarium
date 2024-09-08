@@ -1,9 +1,8 @@
 import * as ReactDOM from 'react-dom';
 import * as React from "react"
-import { Global, css } from '@emotion/react'
 import { Main } from './Main';
 
-const styles = css`
+const styles = `
 body, html {
     width: 100%;
     height: 100%;
@@ -22,7 +21,7 @@ body, html {
 
 ReactDOM.render(
     <>
-        <Global styles={styles} />
+        <style>{styles}</style>
         <Main />
     </>,
     document.getElementById('app')

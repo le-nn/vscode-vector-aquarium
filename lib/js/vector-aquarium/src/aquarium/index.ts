@@ -19,7 +19,6 @@ export const createAquarium = (scene: Scene, finalSetting: AquariumSetting) => {
         scene.instantiate(new RippleServer(finalSetting.rippleColors))
     }
 
-
     for (const actor of finalSetting.actors ?? []) {
         const defaultLocation = new Vector2D(
             Random.next(scene?.width ?? 0),

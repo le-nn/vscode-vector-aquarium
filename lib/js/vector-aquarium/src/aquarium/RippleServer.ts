@@ -3,10 +3,7 @@ import { Color } from "../core/Color"
 import { MousePressedEvent } from "../core/MouseEvent"
 import { Random } from "../core/Random"
 import { Scene } from "../core/Scene"
-import { Vector2D } from "../core/Vector2D"
-import { IRenderer } from "../core/IRenderer"
 import { MarbleCircle, MarbleCircleShapeOption } from "./shapes/MarbleCircle"
-import { Shape } from "../core/Shape"
 import { DrawableShapeComponent } from "../core/DrawableShapeComponent"
 
 export class Ripple extends Actor {

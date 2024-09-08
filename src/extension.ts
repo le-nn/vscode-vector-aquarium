@@ -61,11 +61,10 @@ export async function activate(context: vscode.ExtensionContext) {
     //     //vscode.window.showTextDocument();
     // }));
 
-    const settingUrl = await getSettingFileUri(context.globalStorageUri)
-
     context.subscriptions.push(vscode.commands.registerCommand('vscode-vector-aquarium.config', async () => {
         //vscode.window.showTextDocument();
         if (context.globalStorageUri) {
+            const settingUrl = await getSettingFileUri(context.globalStorageUri)
             const doc = await vscode.workspace.openTextDocument(settingUrl)
             await vscode.window.showTextDocument(doc)
         }

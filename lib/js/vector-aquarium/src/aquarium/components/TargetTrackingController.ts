@@ -7,7 +7,6 @@ import { MousePressedEvent } from "../../core/MouseEvent"
 import { Component } from "../../core/Component"
 import { Food } from "../Food"
 import { FoodProvider } from "../FoodProvider"
-import { Color } from "../../core/Color"
 
 export class TargetTrackingController extends Component {
     private _actualSpeed = 0
