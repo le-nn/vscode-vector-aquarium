@@ -2,7 +2,7 @@
 
 [English](README.md) / [日本語](README-JP.md)
 
-Make your vscode an aquarium and heal you !
+VSCode を水族館にして、癒やされましょう！
 
 <img src="image.gif" width="600px">
 
@@ -10,58 +10,64 @@ Make your vscode an aquarium and heal you !
 
 ## UniAquarium
 
-An binding for Unity Editor
+Unity Editor 向けのバインディング
 
 https://github.com/Garume/UniAquarium?tab=readme-ov-file
 
 ## Install
 
-Search ```vscode-vector-aquarium``` in your vscode extension tab or install from following url.
+VSCode の拡張機能タブで ```vscode-vector-aquarium``` を検索するか、以下の URL からインストールしてください。
 
-https://marketplace.visualstudio.com/items?itemName=le-nn.vscode-vector-aquarium
+[URL](https://marketplace.visualstudio.com/items?itemName=le-nn.vscode-vector-aquarium)
 
 ## Features
 
-* When tapped, bait appears and fish will chase and eat it.
-* When fish tapped, fish will diffuse and escape.
-* Other creature will swim.
-* Grouped fish swim in swarm
+* タップするとエサが出現し、魚が追いかけて食べます。
+* 魚をタップすると、魚が散らばって逃げます。
+* 他の生き物たちも泳ぎます。
+* 群れになった魚は集団で泳ぎます。
 
 ## How it works
 
-Swarm of fish is implemented with boid algorithm.
-https://en.wikipedia.org/wiki/Boids
+魚の群れは、Boid アルゴリズムによって実装されています。
+[URL](https://en.wikipedia.org/wiki/Boids)
 
-Draw and movement logic is here.
-https://github.com/le-nn/vscode-vector-aquarium/tree/main/src/webview/libs
+描画や移動ロジックはこちら：
+[ソースコード](https://github.com/le-nn/vscode-vector-aquarium/tree/main/src/webview/libs)
 
 ## Usage
 
-Open extension tab.
+拡張機能タブを開きます。
 
 <img src="open.png" width="600px">
 
 ### View on secondary side bar
 
-Enable secondary side bar from ```View > Appearance > Secondary Side Bar```.
-Drag from primary side bar and drop Fish icon to secondary side bar in order to make side bar enabled.
+セカンダリーサイドバーに表示する
+
+```表示(View) > 外観(Appearance) > セカンダリーサイドバー(Secondary Side Bar)``` を有効にしてください。
+
+その後、プライマリーサイドバーから魚アイコンをドラッグし、セカンダリーサイドバーへドロップすると表示できます。
 
 ![](./assets/appearance.png)
 ![](./assets/secondary-zoom.png)
 
 ## Setting
 
-Press F1 and input following command.
+F1 キーを押して、以下のコマンドを入力してください。
 
 ```
 vscode-vector-aquarium.config
 ```
 
-And setting file will open.
-Here is example of settings.
-The ```fish``` field represents a swarm of fish.
-One child of array is one swarm. Its child field represents one fish.
-The setting example is as the field name.
+設定ファイルが開きます。
+
+設定例はこちらです。
+
+```fish``` フィールドは魚の群れを表します。
+配列の子要素ひとつが「1つの群れ」であり、その中の要素が「1匹の魚」を表しています。
+
+以下は設定例です。
 
 ```json
 {
@@ -139,4 +145,5 @@ The setting example is as the field name.
 
 ## License
 
-Designed with ♥ by le-nn. Licensed under the MIT License.
+♥ を込めて le-nn により制作されています。
+MIT ライセンスのもとで公開されています。
